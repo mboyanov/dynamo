@@ -1,0 +1,392 @@
+@charset "utf-8";
+/* CSS Document */
+
+html, body {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 24px;
+	color: #CCC;
+	margin: 0 auto;
+	padding: 0;
+  	background-color: #000;
+	background-image: url(../img/footer_bg.png);
+	background-repeat: repeat;
+	background-position: 0% 0%;
+	height: 100%;
+	overflow:hidden;
+}
+#logo { 	
+  position:relative;
+  width:100%;
+  height:20%;
+  
+  
+  text-align: left;
+  padding: 0px;
+  background-image: url(../img/logo.png);
+  background-repeat: no-repeat;
+  background-size:100% 100%;
+/*  z-index:3;
+*/}
+
+#home-en {
+	position:absolute;
+	width:180px;
+	height:25px;
+	bottom:25px;
+	left:50px;
+	background-image: url(../img/home-button-en.png);
+	background-repeat: no-repeat;
+	z-index:4;
+	cursor:pointer;
+}
+#home-en:hover {
+	background-image: url(../img/home-button-en.png);
+}
+a {
+	text-decoration: none;
+}
+img {
+	border: none;
+}
+div {
+	margin: 0;
+	padding: 0;
+}
+
+
+
+
+div#dtvlines{
+	background-image:url(../img/radio-display-tv-lines.png);
+}
+div#dglanz{
+	background-image:url(../img/radio-display-glanz.png);
+}
+div#controls{
+	height:93px;
+	width:62px;
+	float:right;
+	margin: 4px 3px 0 0;
+}
+#controls>div{
+	height:27px;
+	width:27px;
+	margin:0 4px 4px 0;
+	float:left;
+	cursor:pointer;
+	background-position:center center;
+	background-repeat:no-repeat;
+	overflow:hidden;
+}
+
+
+div#sliderBox{
+	width: 84px;
+	height: 18px;
+	position: absolute;
+	top: 55px;
+	left: 745px;
+}
+div#cstop{background-image:url(../img/stop.png);}
+div#cback{background-image:url(../img/back.png);}
+div#cnext{background-image:url(../img/next.png);}
+div#csoundplus{
+	width: 23px;
+	height: 29px;
+	position: absolute;
+	top: 34.5px;
+	left: 850px;
+	background-image:	url(../img/volume_up_button.png);
+	text-decoration: none;
+	z-index:10;
+}
+div#csoundminus{
+	width: 23px;
+	height: 29px;
+	position: absolute;
+	top: 34.5px;
+	left: 725px;
+	background-image:	url(../img/volume_down_button.png);
+	text-decoration: none;
+	z-index:10;
+}
+div#volumebar {
+	width: 70px;
+	height: 20px;
+	top: 25px;
+	left: 762.5px;
+	background-image:	url(../img/volume_bar_base.png);
+	background-repeat:no-repeat;
+}
+div#volumeinside {
+	width: 38px;
+	height: 10px;
+	top: 35px;
+	left: 762.5px;
+	background-image:	url(../img/volume_bar_inside.png);
+	background-repeat:no-repeat;
+}
+div#searchmenu {
+	width: 100%;
+	
+	overflow: hidden;
+	
+	white-space: nowrap;
+	position:relative;
+}
+#searchmenu>div {
+  float: left;
+  width: 30%;
+  height: 40px;
+  margin: 0 0 0 5px;
+  padding: 7px 7px 0 30px;
+  color: #ADC71E;
+  font-size: 18px;
+  background-repeat: no-repeat;
+  text-align: center;
+}
+div#searchland, div#searchgenre {
+	overflow:hidden;
+	background-image:url(../img/select_category_btn.png);
+	background-size:100% 100%;
+	cursor: pointer;
+}
+div#searchgenreclose{
+	width:25px;
+	padding: 7px 0 0 0px;
+	background-image:url(../img/close-btn.png);
+	background-size:100% 100%;
+	position: absolute;
+	top:0;
+	right:100px;
+	cursor:pointer;
+}
+div#searchrname, div#searchregion {
+	width:30%;
+	background-image:url(../img/search_btn.png);
+	background-size:100% 100%;
+	
+}
+div#searchrname>div, div#searchregion>div {
+	width: 22px;
+	height: 23px;
+	float:right;
+	cursor: pointer;
+}
+#searchrname input, #searchregion input{
+	border: none;
+	text-indent:0;
+	text-align: center;
+	font-size:18px;
+	color:inherit;
+	width: 100%;
+	padding:0;
+	background:none;
+	float:left;
+}
+
+div#wrappcontent {
+	width: 100%;
+	height: 70%;
+	margin: 0 auto;
+	overflow: hidden;
+}
+#wrappcontent > div {
+	float: left;
+	height: inherit;
+}
+div#larrow, div#rarrow {
+	width:5%;
+	height:inherit;
+}
+#larrow>div, #rarrow>div {
+	width:100%;
+	height:inherit;
+	cursor: pointer;
+	background-position:center center;
+	background-repeat:no-repeat;
+}
+div#larrow>div {
+	position:relative;
+	top:15%;
+	background-image:url(../img/arrow-left-standard.png);
+	 -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	 background-size:100% 50%;
+	
+}
+div#larrow>div:focus {
+	background-image:url(../img/arrow-left-standard.png);
+	outline:0;
+	 -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+div#larrow>div:hover {
+	background-image:url(../img/arrow-left-active.png);
+}
+div#rarrow>div {
+	background-image:url(../img/arrow-right-standard.png);
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	}
+div#rarrow>div:hover {
+	background-image:url(../img/arrow-right-active.png);
+}
+div#content {
+	width:90%;
+	overflow:hidden;
+	position:relative;
+}
+#content>div {
+	width: 100%;
+	height: inherit;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+#laendermenu, #genremenu {
+	display: none;
+}
+.laender {
+	width:inherit;
+	height:inherit;
+	overflow:hidden;
+}
+div.radio {
+	
+	float: left;
+	width: 33%;
+	height: 70px;
+	overflow: hidden;
+}
+.radio>div {
+	width: 100%;/*288px;*/
+	height: 54px;/*62px;*/
+	margin: 3px;
+	padding: 5px;
+	overflow: hidden;
+	background-image:url(../img/radio-btn-standard.png);
+	background-size:100% 100%;
+	background-repeat:no-repeat;
+	cursor: pointer;
+	
+}
+.radio>div:hover {
+	background-image:url(../img/radio-btn-active.png);
+	background-size:100% 100%;
+}
+.radio>div>div {
+	width: 100%;
+	height: 28px;
+	overflow: hidden;
+	position: relative;
+}
+.rname>div {
+	white-space: nowrap;
+	font-size: 18px;
+	position: absolute;
+	width: auto;
+	display: block;
+	top: 0;
+	left: 0;
+	
+}
+.rmarquee, .rstadt {
+	font-size: 15px;
+	white-space: nowrap;
+	position: absolute;
+	display: block;
+	top: 0;
+	left: 0;
+	color:#ADC71E;
+}
+div.land {
+	width:148px;
+	height:70px;
+	float:left;
+	overflow:hidden;
+}
+.land>div {
+	width: 124px;
+	height: 46px;
+	margin: 3px;
+	padding: 9px;
+	overflow: hidden;
+	background-image:url(../img/land-btn-standard.png);
+	background-repeat:no-repeat;
+	cursor: pointer;
+	text-transform:uppercase;
+}
+.land>div:hover {
+	background-image:url(../img/land-btn-active.png);
+}
+.land>div>img {
+	margin:0 17px 0 0;
+	vertical-align:middle;
+}
+div.genre {
+	width:296px;
+	height:35px;
+	float:left;
+	overflow:hidden;
+}
+.genre>div {
+	width: 285px;
+	height: 29px;
+	margin: 3px;
+	padding: 0 0 0 5px;
+	overflow: hidden;
+	background-image:url(../img/genre-standard.png);
+	background-repeat:no-repeat;
+	cursor: pointer;
+	/*text-transform:uppercase;*/
+}
+.genre>div:hover {
+	background-image:url(../img/genre-active.png);
+}
+#logo, #home, #searchmenu, #wrappcontent{
+	display: none;
+}
+
+.pannel_lines {
+	width: 668px;
+	height: 74px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background-image:	url(../img/display_lines.png);
+	opacity:0.2;
+	filter:alpha(opacity=20);
+}
+.pannel_gloss {
+	width: 688px;
+	height: 48px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background-image:	url(../img/display_glossy.png);
+}
+.pannel_spotlight {
+	width: 120px;
+	height: 90px;
+	position: absolute;
+	top: 0px;
+	left: -5px;
+	background-image:	url(../img/spotlight.png);
+	opacity:0.4;
+	filter:alpha(opacity=40);
+}
+.volume_bar {
+	width: 70px;
+	height: 20px;
+	position: absolute;
+	top: 25px;
+	left: 762.5px;
+	background-image:	url(../img/volume_bar_base.png);
+}
+.volume_inside {
+	width: 38px;
+	height: 10px;
+	position: absolute;
+	top: 35px;
+	left: 762.5px;
+	background-image:	url(../img/volume_bar_inside.png);
+}

@@ -1,0 +1,23 @@
+$def with (problems)
+<center> Main Content
+<br> 
+<table border="1px" >
+$for i in range(len(problems)):
+  $code:
+    problem=problems[i]
+  $if i%10==0:
+    <tr> 
+  $if problem.status==1:
+    <td bgcolor="FFFFFF">
+  $elif problem.status==2:
+    <td bgcolor="00FF00">
+  $elif problem.status==3:
+    <td bgcolor="FF0000">
+  $else:
+    <td bgcolor="D5D5D5">
+  <A href='problem?idp=$problem.id'> $problem.name </A>
+  </td>
+  
+</table>
+ </center>
+  

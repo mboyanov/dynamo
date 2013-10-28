@@ -1,0 +1,32 @@
+$def with (content)
+
+<head>
+<link rel="shortcut icon" href="/static/icon.ico">
+
+<title>Dynamo</title>
+<link href="/static/maincss.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<div id="top">
+<img style="float: right;" src="/static/logo.png">
+</div>
+<div id="content">
+  <div id="left">
+  <center>Menu </center>
+  <ul> 
+ <A href="/collection" class="f"> <li>Get Dynamic </a>
+  <li> Achievements
+  <li> Extras
+  <li> Account 
+  <li> Sign out
+  </ul>
+  </div>
+
+  <div id="main">
+$:content
+
+  </div>
+  </div>
+</body>
+</html> 
