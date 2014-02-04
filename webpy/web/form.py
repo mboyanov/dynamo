@@ -200,6 +200,18 @@ class Textbox(Input):
     """        
     def get_type(self):
         return 'text'
+      
+      
+class Number(Input):
+    """Textbox input.
+    
+        >>> Textbox(name='foo', value='bar').render()
+        u'<input type="text" id="foo" value="bar" name="foo"/>'
+        >>> Textbox(name='foo', value=0).render()
+        u'<input type="text" id="foo" value="0" name="foo"/>'
+    """        
+    def get_type(self):
+        return 'number'
 
 class Password(Input):
     """Password input.

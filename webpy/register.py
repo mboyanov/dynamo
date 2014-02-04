@@ -1,8 +1,9 @@
 import web
 import hashlib
 from web import form
+import config
 
-render = web.template.render('templates/',base="layout") # your templates
+render = web.template.render(config.templatedir,base="layout")
 
 vpass = form.regexp(r".{3,20}$", 'must be between 3 and 20 characters')
 vemail = form.regexp(r".*@.*", "must be a valid email address")
@@ -29,7 +30,7 @@ class register:
             return render.register(f)
         else:
 	  i=web.input()
-	  db = web.database(dbn='mysql', db='web', user='root', pw='')
+	  db = web.database(dbn='mysql', db='web', user='root', pw='xaxaxa')
 	  n = db.insert('example_users', user=i.username,email=i.email,passw=hashlib.md5(i.password).hexdigest())
 	  raise web.seeother('/signin')
-            # do whatever is required for registration 
+           

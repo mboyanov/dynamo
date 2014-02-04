@@ -1,20 +1,16 @@
-$def with (problems)
-<center> Main Content
+$def with (problems,progress)
+<center> Problems
 <br> 
 <table border="1px" >
 $for i in range(len(problems)):
   $code:
     problem=problems[i]
-  $if i%10==0:
+  $if i%5==0:
     <tr> 
-  $if problem.status==1:
-    <td bgcolor="FFFFFF">
-  $elif problem.status==2:
-    <td bgcolor="00FF00">
-  $elif problem.status==3:
-    <td bgcolor="FF0000">
+  $if problem.id not in progress:
+    <td bgcolor="FFFFFF" class="collectionproblem">
   $else:
-    <td bgcolor="D5D5D5">
+    <td bgcolor="00FF00" class="collectionproblem">
   <A href='problem?idp=$problem.id'> $problem.name </A>
   </td>
   

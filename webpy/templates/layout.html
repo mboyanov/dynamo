@@ -5,6 +5,21 @@ $def with (content)
 
 <title>Dynamo</title>
 <link href="/static/maincss.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript">
+
+
+function highlight(id,value){
+var elem = document.getElementById(id);
+elem.title=value;
+}
+
+function unhighlight(elem){
+elem.style.backgroundColor="rgb(0,144,227)";
+}
+
+</script>
+
 </head>
 
 <body>
@@ -15,12 +30,12 @@ $def with (content)
   <div id="left">
   <center>Menu </center>
   <ul> 
- <A href="/collection" class="f"> <li>Get Dynamic </a>
-  <li> Achievements
+ <A href="/collection" class="f"> <li>Get Dynamic </A>
+ <A href="/achievements"> <li> Achievements </A>
   <li> Extras
   <li> Account 
-  <li> Sign out
-  </ul>
+ <A href='/signout'> <li> Sign out </A>
+   </ul>
   </div>
 
   <div id="main">
@@ -28,5 +43,11 @@ $:content
 
   </div>
   </div>
+  
+
+  
+  
+
+  
 </body>
 </html> 

@@ -1,7 +1,9 @@
 import web
 import hashlib
 from web import form
-render = web.template.render('templates/',base="layout")
+import config
+
+render = web.template.render(config.templatedir,base="layout")
 
 signin_form = form.Form(
     form.Textbox("username", description="Username"),
@@ -13,13 +15,16 @@ class signin:
   def GET(self):
     f=signin_form();
     return render.signin(f)
+   
   def POST(self):
     i=web.input()
     vars=dict(user=str(i.username))
-    db = web.database(dbn='mysql', db='web', user='root', pw='')
+    db = web.database(dbn='mysql', db='web', user='root', pw='xaxaxa')
     result=db.select('example_users',vars,where="user =$user")
-    if hashlib.md5(i.password).hexdigest()==result[0]['passw']:
+    result=result[0]
+    if hashlib.md5(i.password).hexdigest()==result['passw']:
       web.ctx.session.user=i.username
+      web.ctx.session.userid=result.id;
       raise web.seeother('/collection')
     else:
       return "incorrect"

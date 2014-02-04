@@ -7,7 +7,7 @@ def getRandomConstants(t):
   constants={}
   for a in t:
     print a
-    constants[a[0]]=random.randint(1,a[1])
+    constants[a[0]]=random.randint(a[1],a[2])
   return constants
   
 def getRandomArrays(t):
@@ -19,6 +19,6 @@ def getRandomArrays(t):
   for entry in t:
     arrays[entry[0]]=[]
     for n in range(entry[1]):
-      arrays[entry[0]].append(random.randint(1,entry[2]))
+      arrays[entry[0]].append(random.randint(entry[2],entry[3]))
   print arrays
   return arrays
