@@ -6,25 +6,14 @@ from pdfgenerator import pdfgenerator
 
 render = web.template.render(config.templatedir,base="layout")
 
-vpass = form.regexp(r".{3,20}$", 'must be between 3 and 20 characters')
-vemail = form.regexp(r".*@.*", "must be a valid email address")
 
-register_form = form.Form(
-    form.Textbox("username", description="Username"),
-    form.Textbox("email", vemail, description="E-Mail"),
-    form.Password("password", vpass, description="Password"),
-    form.Password("password2", description="Repeat password"),
-    validators = [
-        form.Validator("Passwords did't match", lambda i: i.password == i.password2)]
-
-)
 
 class achievements:
     def GET(self):
         # do $:f.render() in the template
         
         db = web.database(dbn='mysql', db='web', user='root', pw='xaxaxa')
-        data = db.query("SELECT * from achievements a join user_achievements ua on a.id=ua.achievement_id where ua.user_id="+str(web.ctx.session.userid))
+        data = db.query("SELECT id,type,data,title,url,description,user_id from achievements a left join user_achievements ua on a.id=ua.achievement_id AND ua.user_id="+str(web.ctx.session.userid))
         
         return render.achievements(data)
     def POST(self):

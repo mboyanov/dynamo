@@ -1,0 +1,52 @@
+S-> |1-D
+    |2-D
+    
+1-D -> ''|1-DR\n1D
+
+1-DR -> |UTC = UEXPR 
+	|E_Row Id
+	|Answer_Row
+
+	
+	
+	
+#Unevaluated table cell
+UTC -> |T[ID]
+
+#An id can be an integer, a constant defined for the problem, or a value defined for the problem
+ID-> |Int
+     |Constant
+     |Value
+
+#used for convenience to denote a computable unit     
+FINAL->|Num
+       |Constant
+       |Value
+
+UEXPR -> |FINAL	 
+	 |FINAL + UEXPR
+	 |FINAL - UEXPR
+	 |FINAL * UEXPR
+	 |FUNCTION(UEXPR_L)
+
+
+FUNCTION-> |max
+	   |min
+
+UEXPR_L -> |UEXPR
+	   |UEXPR_L,UEXPR
+	   
+	   
+#Evaluated table cell
+E_Row id-> |(ETC id) = (E_EXPR id) (FORCLAUSE id)
+	   |(ETC id) = (E_EXPR_W id) (FORCLAUSE id) (WHERECLAUSE id)
+	   
+ETC[id] -> |T[id]
+
+E_Final id -> |Final
+	      |id
+	      
+E_Final_w id -> |E_Final id
+		|item
+		
+E_EXPR id

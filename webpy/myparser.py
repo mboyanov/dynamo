@@ -30,7 +30,7 @@ def splitFunction(t):
   item=t[:a]
   function=t[a+1:b]
   value=t[b+1:c]
-  print value
+ # print value
   return item,function,value
   
 
@@ -48,9 +48,25 @@ def hasWhereClause(t):
   return True
 
 
+
+def removeWhiteSpace(t):
+  t=re.sub(' +',' ',t)
+  t=re.sub('\[ ','[',t)
+  t=re.sub('\s?\]\s?',']',t)
+  t=re.sub('\s?\(\s?','(',t)
+  t=re.sub('\s?\)\s?',')',t)
+  t=re.sub('\s?\+\s?','+',t)
+  t=re.sub('\s?-\s?','-',t)
+  t=re.sub('\s?\*\s?','*',t)
+  return t
+
 def massSplit2(t,arrays):
+  t=removeWhiteSpace(t)
+  
   for i in arrays.keys():
     t=t.replace(i,'arrays[\''+i+'\']')
+  if 'answer' in t:
+    return answerLine(t)
   forclause=None
   whereclause=None
   function=None
@@ -66,7 +82,7 @@ def massSplit2(t,arrays):
     return t
   a=forclause.count('for')
   if a==1:
-    rangeindex=re.search( '[a-zA-Z0-9+-]+:[a-zA-Z0-9+-]+',forclause)
+    rangeindex=re.search( '[a-zA-Z0-9+-]+:[a-z()\[\]\'\'A-Z0-9+-]+',forclause)
     forclause=forclause.replace(':',',')
     forclause=forclause[:rangeindex.start()]+'range('+forclause[rangeindex.start():rangeindex.end()]+'):\n\t'
 
@@ -77,14 +93,14 @@ def massSplit2(t,arrays):
       whereclause=whereclause[5:]
       (item,function,args)=splitFunction(function)
       bp=item.replace('T','backpointers')
-      where="arguments=[]\n\tfor j in range(n):\n\t\tif "+whereclause+":\n\t\t\targuments.append((j,("+args+"))) \n\tprint backpointers\n\ttry:\n\t\t"+bp+","+item+"="+function+"(arguments, key=operator.itemgetter(1))\n\texcept(ValueError):\n\t\t"+item+"=default"
+      where="arguments=[]\n\tfor j in range(n):\n\t\tif "+whereclause+":\n\t\t\targuments.append((j,("+args+"))) \n\t\n\ttry:\n\t\t"+bp+","+item+"="+function+"(arguments, key=operator.itemgetter(1))\n\texcept(ValueError):\n\t\t"+item+"=default"
       t+=where
       
   elif a==2:
-    rangeindex=re.search( '[a-zA-Z0-9+-]+:[a-zA-Z0-9+-]+',forclause)
+    rangeindex=re.search( '[a-zA-Z0-9+-]+:[a-z()\[\]\'\'A-Z0-9+-]+',forclause)
     secondfor=forclause[rangeindex.end():]
     forclause=forclause[:rangeindex.start()]+'range('+forclause[rangeindex.start():rangeindex.end()]+')'
-    rangeindex=re.search( '[a-zA-Z0-9+-]+:[a-zA-Z0-9+-]+',secondfor)
+    rangeindex=re.search( '[a-zA-Z0-9+-]+:[a-z()\[\]\'\'A-Z0-9+-]+',secondfor)
     secondfor=secondfor[:rangeindex.start()]+'range('+secondfor[rangeindex.start():rangeindex.end()]+')'
     t=forclause.replace(':',',')+':\n\t'+secondfor.replace(':',',')+':\n\t\t'
     
@@ -104,6 +120,7 @@ def massSplit2(t,arrays):
       (item,function,args)=splitFunction(function)
       where="arguments=[]\n\t\tfor j in range(n):\n\t\t\tif "+whereclause+":\n\t\t\t\targuments.append("+args+"\n\t\tprint arguments\n\t\ttry:\n\t\t\t"+item+"="+function+"(arguments)\n\t\texcept(ValueError):\n\t\t\t"+item+"=default"
       t+=where
+  #print t
   return t
 
 
@@ -121,7 +138,7 @@ def extract(value,string,arrays,cellvalue):
     return string
   forclause=string[forindex.start():]
   function=string[string.find('=')+1:forindex.start()]
-  print function
+  #print function
   string=string[:forindex.start()]
   arg=extractArgument(forclause)
   t=re.finditer('\W'+arg+'\W',string)
@@ -158,15 +175,32 @@ def extract2d(value,value2,string,arrays):
       break;
       
   return newstring
-  
+
+
+def answerLine(command):
+  return command
+
+
+
+
+print massSplit2('T[0]=1   +   2',{})
+
+print massSplit2('T[   0   ]=1   +   2',{})
+print massSplit2('T[   0   ] =1   +   2',{})
+print massSplit2('T[   0   ] =1   *   2',{})
+
 s="T[i]=T[i-1]+1 for i in 1:N"
 s1="T[0]=1"
-
+massSplit2(lis2,arrays)
 s2="T[i]= min(T[i-values[j]]+1) for i in 1:C where values[j]<=i"
 #T[i][j]=min(T[i-1][j]+1,T[i][j-1]+1,T[i-1][j-1]+(word1[i-1]!=word2[j-1])) for i in 1:n+1 for j in 1:n+1
-#exec( massSplit(lis0))	       
-#exec( massSplit(lis1))
-#exec( massSplit(lis2))
+import operator
+n=len(arrays['values'])
+T=[0]*100
+backpointers=[0]*100
+exec( massSplit2(lis0,arrays))	       
+exec( massSplit2(lis1,arrays))
+exec( massSplit2(lis2,arrays))
 
 #exec(massSplit(makingchange1))
 #exec(massSplit(makingchange2))

@@ -10,7 +10,6 @@ vemail = form.regexp(r".*@.*", "must be a valid email address")
 
 register_form = form.Form(
     form.Textbox("username", description="Username"),
-    form.Textbox("email", vemail, description="E-Mail"),
     form.Password("password", vpass, description="Password"),
     form.Password("password2", description="Repeat password"),
     validators = [
@@ -31,6 +30,6 @@ class register:
         else:
 	  i=web.input()
 	  db = web.database(dbn='mysql', db='web', user='root', pw='xaxaxa')
-	  n = db.insert('example_users', user=i.username,email=i.email,passw=hashlib.md5(i.password).hexdigest())
+	  n = db.insert('example_users', user=i.username,passw=hashlib.md5(i.password).hexdigest())
 	  raise web.seeother('/signin')
            

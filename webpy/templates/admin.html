@@ -1,4 +1,4 @@
-$def with (form,constants=3,arrays=3)
+$def with (form,constants=3,arrays=3,hints=3,video=1)
 
 
 
@@ -15,15 +15,15 @@ $def with (form,constants=3,arrays=3)
 <b> Recurrent Solution: <br>
 <textarea class="FormElement" name="recurrence" id="term" cols="40" rows="4"></textarea> 
 <br>
-
-<b>Solution Text</b>:
-<br>
-      
-<textarea class="FormElement" name="solutiontext" id="term" cols="40" rows="4"></textarea>
-<br>
+Video URL: <input type="text" name="videourl"> <br>
+Hints:<br>
+<table>
+$for i in range(hints):
+  Hint $i:<br> <textarea name="hintsnames" cols="40" rows="4"></textarea>
+  <br>
 
 Constants:<br>
-<table>
+
 $for i in range(constants):
   Name: <input type="text" name="constantsnames"> Minimal Value: <input type="number" style="width:50px" name="constantsmin" value="0" size="3"> Maximal Value: <input type="number" style="width:50px" name="constantsmax" size="3">
   <br>

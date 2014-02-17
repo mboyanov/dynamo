@@ -30,18 +30,18 @@ def checksolution(idp,theircommands):
     #both answers are none-just output tables
     if mysolution.answer is None and theirsolution.answer is None:
       if mysolution.table==theirsolution.table:
-	print "Try "+i+":","TRUE TRUE  TRUE!!!!!!!!!!!"	
+	print "TRUE TRUE  TRUE!!!!!!!!!!!"	
       else:
 	print "FALSE FALSE FALSE!!!!"
-	print "mine:"+mysolution.table
-	print "theirs:"+theirsolution.table
+	print mysolution.table
+	print theirsolution.table
 	db.insert('user_input',id_user=web.ctx.session.userid,attempt=text,id_problem=idp,correct=0)
 	return False
     #if one answer is None, return false. TODO: make them separate when you get messages
     elif (mysolution.answer is not None and theirsolution.answer is None) or (mysolution.answer is None and theirsolution.answer is not None) :
-      return False
-    elif mysolution.answer!=theirsolution.answer:
-      return False
+      return false
+    else:
+      return mysolution.answer==theirsolution.answer
   db.insert('user_input',id_user=web.ctx.session.userid,attempt=text,id_problem=idp,correct=1)
   try:
     db.insert('user_problems', id_user=web.ctx.session.userid,id_problem=idp)
@@ -101,24 +101,23 @@ class problemview:
       if 'hint' in data:
 	web.ctx.session.hintlevel=min(web.ctx.session.hintlevel+1,3)
 	web.ctx.session.hint=mhinter.hint(problemdata.recurrence,web.ctx.session.hintlevel)
+	print "HEREEEEEEEEEEEEEEEEE"
+	print web.ctx.session.hint
+	if web.ctx.session.hint is None or web.ctx.session.hint=='\n':
+	  return "ERROR"
 	return render.problemtable(web.ctx.session.instance,mysolution,None,comments,False)
       commands=re.split('[\n\r]+',data['recterms'])
       message=''
-      theirsolution=None
       try:
-	theirsolution=solutioninstance(solver2.solve(web.ctx.session.instance.lists,web.ctx.session.instance.constants,commands,web.ctx.session.instance.dimensions[0],web.ctx.session.instance.dimensions[1]))
-	print "THEIR SOLUTION:",theirsolution.table
 	correct=checksolution(web.ctx.session.idp,commands)
-	
-	
 	if correct:
 	  achecker=achievementchecker()
 	  message=achecker.check(web.ctx.session.userid)
-	
+	theirsolution=solutioninstance(solver2.solve(web.ctx.session.instance.lists,web.ctx.session.instance.constants,commands,web.ctx.session.instance.dimensions[0],web.ctx.session.instance.dimensions[1]))
       except:
 	correct=False
-	
-	return render.problemtable(web.ctx.session.instance,mysolution,theirsolution.table,comments,correct)
+	theirsolution=None
+	return render.problemtable(web.ctx.session.instance,mysolution,None,comments,correct)
 	
       return render.problemtable(web.ctx.session.instance,mysolution,theirsolution.table,comments,correct=correct,message=message)
     

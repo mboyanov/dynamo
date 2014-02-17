@@ -2,6 +2,7 @@ import myparser
 from customlist import *
 import operator
 def solve(arrays,constants,commands,x,y):
+    answer=None
     for key in constants:
       exec(key+"="+str(constants[key]))
     if x==1:
@@ -14,19 +15,19 @@ def solve(arrays,constants,commands,x,y):
 	T.append([None]*y)
 	P.append([None]*y)
     backpointers=[None]*100
-    print arrays=={}
     default=0
     if (arrays=={})==False:
       n=len(arrays[arrays.keys()[0]])
     for command in commands:
       if 'import' in command or 'exec' in command:
 	return None
-      print command
+      #print command
       parsedcommand=myparser.massSplit2(command,arrays)
       print parsedcommand
-      #print T
+      print "before",T
       
       exec(parsedcommand)
+      print "after",T
       if x==1:
 	for j in range(y):
 	  if P[j] is None and T[j] is not None:
@@ -41,7 +42,7 @@ def solve(arrays,constants,commands,x,y):
 	      
     #print T
     #print P
-    return T,P
+    return T,P,answer
 
 T=[[0]*5]*5
 ed1="for i in range(0,n):\n\tT[0][i]=i" 

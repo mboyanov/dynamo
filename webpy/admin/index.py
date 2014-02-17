@@ -30,12 +30,25 @@ class admin:
     return render.admin(f)
   def POST(self):
     top()
-    i=web.input(constantsnames=[],constantsmin=[],constantsmax=[],arraysnames=[],arraysmin=[],arraysmax=[],arraysnum=[])
+    i=web.input(constantsnames=[],constantsmin=[],constantsmax=[],arraysnames=[],arraysmin=[],arraysmax=[],arraysnum=[],hintsnames=[])
     f=problem_form()
     if f.validates()==False:
       return 'Please provide a name for the problem,a difficulty and positive dimensions'
     out=""
     db = web.database(dbn='mysql', db='web', user='root', pw='xaxaxa')
+    hints=[]
+    
+    for  t in range(len(i.hintsnames)):
+	if len(i.hintsnames[t])>0 and len(i.hintsnames[t])<400 :
+	  try:
+	    hints.append(i.hintsnames[t])
+	  except:
+	    try:
+	      return 'problem with hint '+i.hintsnames[t]
+	    except(NameError):
+	      return 'problem with hint '+i.hintsnames[t]
+	elif len(i.constantsnames[t])>400:
+	  return 'Hint is too long - maximum 400 characters:'+i.hintsnames[t]
     constants=[]
     for  t in range(len(i.constantsnames)):
 	if len(i.constantsnames[t])>0 and len(i.constantsnames[t])<100 :
@@ -64,20 +77,21 @@ class admin:
 	  return 'Name of array is too big:'+i.arrayssnames[t]
     if i.description is None:
       return 'Please provide a description for the problem'
-    if i.solutiontext is None:
-      return 'Please provide some solution text'
+    if i.videourl is not None and len(i.videourl)>100:
+      return "URL too long"
+	
     constantsinst=randomgenerator.getRandomConstants(str(constants))
     arraysinst=randomgenerator.getRandomArrays(str(arrays))
     
     i.dimension_x=int(i.dimension_x)
     i.dimension_y=int(i.dimension_y)
-    t=problem('<p>'+i.description,arraysinst,constantsinst,(i.dimension_y,i.dimension_x),i.solutiontext,'')
+    t=problem('<p>'+i.description,arraysinst,constantsinst,(i.dimension_y,i.dimension_x),'','')
     commands=re.split('[\n\r]+',i.recurrence)
     print t.constants
     mysolution=solutioninstance(solver2.solve(t.lists,t.constants,commands,t.dimensions[0],t.dimensions[1]))
     
     n = db.insert('problem', name=i.name,difficulty=i.difficulty)
-    q=db.insert('description',id=n,description=i.description,recurrence=i.recurrence,dimension_x=i.dimension_x,dimension_y=i.dimension_y,solutiontext="",constants=str(constants),arrays=str(arrays))
+    q=db.insert('description',id=n,description=i.description,recurrence=i.recurrence,dimension_x=i.dimension_x,dimension_y=i.dimension_y,solutiontext="",constants=str(constants),arrays=str(arrays),hints=str(hints),video=("\""+i.videourl+"\""))
     raise web.seeother('/problem?idp='+str(n))
    
     

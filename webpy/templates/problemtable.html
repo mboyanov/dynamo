@@ -1,16 +1,45 @@
 $def with(problem,solution,theirsolution,comments,correct=False,message='')
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+    
+<script type="text/javascript">-->
+
+/*
+function next_value(){
+var idnow=id.toString();
+var elem=document.getElementById(idnow);
+elem.setAttribute("value", values[id]);
+elem.title=paths[id];
+id=id+1; 
+}*/
 
 
+
+</script>
 
 
 $:problem.content <br>
-Values given:<br>
+Example Input:<br>
 $for i in problem.lists
   $i : $problem.lists[i]
   <br>
 $for i in problem.constants
   $i : $problem.constants[i]
       <br>
+      
+      
+      
+      
+$if problem.hints is not None:
+  $for p in range(len(problem.hints)):
+    <div> </div>
+    <input type="button" class="input" onclick="show_hide('h_$p');" value="Hint $p"> 
+    <div id="h_$p" style="display:none"> $problem.hints[p] </div>
+    
+<br>
+    
+$if problem.video is not None:
+  <input type="button" class="input" onclick="show_hide('vid');" value="Video"> <br>
+ <center> <div id="vid" style="display:none"> <video controls> <source src="$problem.video" > </video> </div> </center>
 <form name="regen" method="post">
 <input type="text" name="action" value="new" hidden="true">
 <input type="submit" value="Generate new instance" class="input">
@@ -23,7 +52,11 @@ $for i in problem.constants
 <form name="regen" method="post">
 <input type="text" name="action" value="nextvalue" hidden="true">
 <input type="submit" value="Show next value" class="input">
+ <input type="button" class="input" onclick="next_value('0');" value="NEXT" style="display:none">
 </form>
+
+
+
 
 <p>
 To see an explanation of the table put your pointer <i title="$problem.tableexplanation"> here </i>. <p>
@@ -60,7 +93,7 @@ $for i in range(rows):
 	path=solution.table[i][j]
       if value is None:
 	continue
-      elif id>context.solutionindex:
+      elif id>=context.solutionindex:
 	value=""
 	path=""
       
@@ -80,13 +113,14 @@ $else:
 $if context.hintlevel>0:
   $context.hint
 </textarea>
-<input type="submit" class="input" name="hint" value="Hint me">
+<input type="submit" class="input" name="hint" value="Hint me" title="You can press this button to view part of the solution to the problem!">
 <input type="submit" class="input">
 </form>
 
-<h1> Output </h1>  
+
 
 $if theirsolution is not None:
+  <h1> Output </h1>  
   $for i in range(rows):
     <br>
     $for j in range(columns):

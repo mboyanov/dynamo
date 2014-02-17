@@ -18,6 +18,12 @@ function unhighlight(elem){
 elem.style.backgroundColor="rgb(0,144,227)";
 }
 
+function show_hide(id){
+var elem=document.getElementById(id);
+if (elem.style.display=='none') elem.style.display='inline';
+else elem.style.display='none';
+}
+
 </script>
 
 </head>
@@ -39,8 +45,12 @@ elem.style.backgroundColor="rgb(0,144,227)";
   </div>
 
   <div id="main">
+  
+ 
+  
 $:content
 
+ 
   </div>
   </div>
   

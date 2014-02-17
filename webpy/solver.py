@@ -17,12 +17,11 @@ def solve(arrays,constants,commands,x,y):
     for command in commands:
       command=myparser.massSplit2(command,arrays)
       print command
-      print T
+      
       
       exec(command)
       
-    print T
+    
     return T
 
-T=[[0]*5]*5
-ed1="for i in range(0,n):\n\tT[0][i]=i" 
+
