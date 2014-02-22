@@ -1,8 +1,7 @@
 import re
 class hinter:
   def hint(self,expr,level):
-    out=""
-    print "received",expr
+    out=""   
     if len(expr)>300:
       return None
     commands=re.split('[\n\r]+',expr)
@@ -15,7 +14,6 @@ class hinter:
 	return None
       else:
 	out+=self.hintline(i,level)+'\n'
-    print "returning",out
     return out
   
   

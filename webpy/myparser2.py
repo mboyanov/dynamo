@@ -8,7 +8,7 @@ fibonnaci2="T[1]=1"
 fibonnaci3="T[i]=T[i-1]+T[i-2] for i in 2:n"
 
 makingchange1="T[0]=0"
-makingchange2="T[i]= min(T[i-values[j]]+1) for i in 1:C where values[j]<=i"
+makingchange2="T[i]= min(T[i-values[item]]+1) for i in 1:C where values[item]<=i"
 
 lis0="default=1"
 lis1="T[0]=1"
@@ -52,9 +52,9 @@ def hasWhereClause(t):
 def removeWhiteSpace(t):
   t=re.sub(' +',' ',t)
   t=re.sub('\[ ','[',t)
-  t=re.sub('\s?\]\s?',']',t)
+  t=re.sub('\s?\]',']',t)
   t=re.sub('\s?\(\s?','(',t)
-  t=re.sub('\s?\)\s?',')',t)
+  t=re.sub('\s?\)',')',t)
   t=re.sub('\s?\+\s?','+',t)
   t=re.sub('\s?-\s?','-',t)
   t=re.sub('\s?\*\s?','*',t)
@@ -70,11 +70,14 @@ def massSplit2(t,arrays,constants,twod):
     return massSplitOneD(t,constants,arrays)
   
 def massSplitOneD(command,constants,arrays):
+    
     equalsignindex=re.search('=',command)
+    print command
     left=command[:equalsignindex.start()]
     right=command[equalsignindex.end():]
     if 'where' in command.lower():
-      right= massSplitOneDWhere(left,right,constants,arrays)
+      right= massSplitOneDWhere(right,left,constants,arrays)
+      return right
     elif 'for' in command.lower():
       return massSplitOneDFor(right,left,constants,arrays)
     else:
@@ -82,10 +85,13 @@ def massSplitOneD(command,constants,arrays):
       return command
 
 def extractLeftParameter(left,constants=[],arrays={}):
-  parameterindex=re.search('\[.*\]',left)
+  parameterindex=re.search('\[.*\]',left) 
   
   if parameterindex is None:
-    return -1 #no parameter=>this is an answer line or a default line
+    if 'answer' in left or 'default' in left:
+      return -1 #no parameter=>this is an answer line or a default line
+    else:
+      raise Exception("Missing [ or ] in "+left)
   else:
     parameter=left[parameterindex.start()+1:parameterindex.end()-1]
     try:
@@ -131,15 +137,52 @@ def massSplitOneDFor(command,left,constants=[],arrays={}):
   if param!=-1:
     paramindex=re.search('\s'+param+'\s',forclause)
     if paramindex is None:
-      raise Exception('undefined loop parameter '+param)
+      raise Exception('undefined loop parameter '+param+" in "+left+"="+command)
   forclause=re.sub(':',',',forclause)
   rangeindex=re.search('\s+[^\s]+,[^\s]+\s*',forclause)
   forclause=forclause[:rangeindex.start()]+' range('+forclause[rangeindex.start()+1:rangeindex.end()]+'):'
   forclause+="\n\t"+left+"="+function
   return forclause
+ 
+ 
+ 
+def massSplitOneDWhere(command,left,constants=[],arrays={}):
+  whereindex=re.search("where",command)
+  whereclause=command[whereindex.end():]
+  command = command[:whereindex.start()-1]
+  forindex=re.search("for",command)
+  forclause=command[forindex.start():]
+  function=command[:forindex.start()-1]
+  param=extractLeftParameter(left,constants,arrays)
+  if param!=-1:
+    paramindex=re.search('\s'+param+'\s',forclause)
+    if paramindex is None:
+      raise Exception('undefined loop parameter '+param) 
+  forclause=re.sub(':',',',forclause)
+  rangeindex=re.search('\s+[^\s]+,[^\s]+\s*',forclause)
+  forclause=forclause[:rangeindex.start()]+' range('+forclause[rangeindex.start()+1:rangeindex.end()]+'):'
+  (function,argument)=extractFunctionAndArgument(function)
+  forclause=forclause+'\n\targuments=[]\n\tfor item in range(n):\n\t\tif '+whereclause+":"
+  forclause+="\n\t\t\targuments.append("+argument+")"
+  forclause+="\n\t\ttry:"
+  forclause+="\n\t\t\t"+left+"="+function+"(arguments)"
+  forclause+="\n\t\texcept(ValueError):"
+  forclause+="\n\t\t\t"+left+"="+"default"
+  return forclause
+
+
+def extractFunctionAndArgument(function):
+  argumentindex=re.search('\(.*\)',function)
+  if argumentindex is None:
+    raise Exception("Missing ( or ) in " + function)
+  effectivefunction = function[:argumentindex.start()]
+  if 'min' not in effectivefunction and 'max' not in effectivefunction:
+    raise Exception("Outside function needs to be min or max")
+  argument=function[argumentindex.start()+1:argumentindex.end()-1]
+  return (effectivefunction,argument)
   
 def massSplitTwoD(command):
-  #TODO
+  
   return None
 
 def extractArgument(forclause):
@@ -215,12 +258,13 @@ assert(extractLeftParameter('T[arrays[values[C]]]',arrays=arrays,constants=const
 assert(extractLeftParameter('T[0]')==-1)
 assert(extractLeftParameter('T[i]')=='i')
 assert(extractLeftParameter('T[C]',constants=constants)==-1)
-
 assert(extractLeftParameter('answer')==-1)
 
 
+assert(extractFunctionAndArgument('min(T[j]+1)')==('min','T[j]+1'))
 assert(massSplitOneDFor('T[i-1]+1 for i in 1:N','T[i]')=='for i in range(1,N):\n\tT[i]=T[i-1]+1')
-
+print massSplitOneD(makingchange2,[],{})
+print massSplitOneD(lis2,[],{})
 
 #s="T[i]=T[i-1]+1 for i in 1:N"
 #s1="T[0]=1"

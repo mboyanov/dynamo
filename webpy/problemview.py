@@ -29,8 +29,9 @@ def checksolution(idp,theircommands):
     theirsolution=solutioninstance(solver2.solve(t.lists,t.constants,theircommands,t.dimensions[0],t.dimensions[1]))
     #both answers are none-just output tables
     if mysolution.answer is None and theirsolution.answer is None:
+      
       if mysolution.table==theirsolution.table:
-	print "Try "+i+":","TRUE TRUE  TRUE!!!!!!!!!!!"	
+	print "Try "+str(i)+":","TRUE TRUE  TRUE!!!!!!!!!!!"	
       else:
 	print "FALSE FALSE FALSE!!!!"
 	print "mine:"+mysolution.table
@@ -114,12 +115,14 @@ class problemview:
 	if correct:
 	  achecker=achievementchecker()
 	  message=achecker.check(web.ctx.session.userid)
-	
-      except:
+	  
+      except Exception as e:
 	correct=False
-	
-	return render.problemtable(web.ctx.session.instance,mysolution,theirsolution.table,comments,correct)
-	
+	if theirsolution is not None:
+	  return render.problemtable(web.ctx.session.instance,mysolution,theirsolution.table,comments,correct)
+	else:
+	  return render.problemtable(web.ctx.session.instance,mysolution,None,comments,correct,e.message)
+
       return render.problemtable(web.ctx.session.instance,mysolution,theirsolution.table,comments,correct=correct,message=message)
     
     if data['action']=='new':

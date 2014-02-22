@@ -62,7 +62,6 @@ def removeWhiteSpace(t):
 
 def massSplit2(t,arrays):
   t=removeWhiteSpace(t)
-  
   for i in arrays.keys():
     t=t.replace(i,'arrays[\''+i+'\']')
   if 'answer' in t:
