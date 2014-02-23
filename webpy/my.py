@@ -13,7 +13,7 @@ from signin import signin
 from web import form
 import random
 from collections import defaultdict
-import compiler
+
 from index import admin
 from remove import remove
 from modify import modify
