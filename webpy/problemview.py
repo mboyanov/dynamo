@@ -6,6 +6,7 @@ from hinter import hinter
 from solution import solutioninstance
 from problem import problem
 import solver2
+from ParserException import ParserException
 from achievementchecker import achievementchecker
 db = web.database(dbn='mysql', db='web', user='root', pw='xaxaxa')
 render=None
@@ -34,8 +35,8 @@ def checksolution(idp,theircommands):
 	print "Try "+str(i)+":","TRUE TRUE  TRUE!!!!!!!!!!!"	
       else:
 	print "FALSE FALSE FALSE!!!!"
-	print "mine:"+mysolution.table
-	print "theirs:"+theirsolution.table
+	print "mine:"+str(mysolution.table)
+	print "theirs:"+str(theirsolution.table)
 	db.insert('user_input',id_user=web.ctx.session.userid,attempt=text,id_problem=idp,correct=0)
 	return False
     #if one answer is None, return false. TODO: make them separate when you get messages
@@ -100,29 +101,34 @@ class problemview:
     data=web.input()
     if 'recterms' in data:
       if 'hint' in data:
-	web.ctx.session.hintlevel=min(web.ctx.session.hintlevel+1,3)
-	web.ctx.session.hint=mhinter.hint(problemdata.recurrence,web.ctx.session.hintlevel)
-	return render.problemtable(web.ctx.session.instance,mysolution,None,comments,False)
+        web.ctx.session.hintlevel=min(web.ctx.session.hintlevel+1,3)
+        web.ctx.session.hint=mhinter.hint(problemdata.recurrence,web.ctx.session.hintlevel)
+        return render.problemtable(web.ctx.session.instance,mysolution,None,comments,False)
       commands=re.split('[\n\r]+',data['recterms'])
       message=''
       theirsolution=None
       try:
-	theirsolution=solutioninstance(solver2.solve(web.ctx.session.instance.lists,web.ctx.session.instance.constants,commands,web.ctx.session.instance.dimensions[0],web.ctx.session.instance.dimensions[1]))
-	print "THEIR SOLUTION:",theirsolution.table
-	correct=checksolution(web.ctx.session.idp,commands)
+        theirsolution=solutioninstance(solver2.solve(web.ctx.session.instance.lists,web.ctx.session.instance.constants,commands,web.ctx.session.instance.dimensions[0],web.ctx.session.instance.dimensions[1]))
+        print "THEIR SOLUTION:",theirsolution.table
+        correct=checksolution(web.ctx.session.idp,commands)
 	
 	
-	if correct:
-	  achecker=achievementchecker()
-	  message=achecker.check(web.ctx.session.userid)
+        if correct:
+          achecker=achievementchecker()
+          message=achecker.check(web.ctx.session.userid)
 	  
-      except Exception as e:
-	correct=False
-	if theirsolution is not None:
-	  return render.problemtable(web.ctx.session.instance,mysolution,theirsolution.table,comments,correct)
-	else:
-	  return render.problemtable(web.ctx.session.instance,mysolution,None,comments,correct,e.message)
-
+      except ParserException as e:
+        correct=False
+        if theirsolution is not None:
+          return render.problemtable(web.ctx.session.instance,mysolution,theirsolution.table,comments,correct)
+        else:
+          return render.problemtable(web.ctx.session.instance,mysolution,None,comments,correct,e.message)
+      except NameError as e:
+        correct=False
+        if theirsolution is not None:
+          return render.problemtable(web.ctx.session.instance,mysolution,theirsolution.table,comments,correct)
+        else:
+          return render.problemtable(web.ctx.session.instance,mysolution,None,comments,correct,e.message)
       return render.problemtable(web.ctx.session.instance,mysolution,theirsolution.table,comments,correct=correct,message=message)
     
     if data['action']=='new':

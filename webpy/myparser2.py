@@ -1,4 +1,5 @@
 import re
+from ParserException import ParserException
 cs1="T[0]=values[0]"
 cs2="T[i]=max(T[i-1]+values[i],values[i]) for i in 1:n"
 
@@ -58,7 +59,7 @@ def massSplitOneD(command,constants,arrays):
     
     equalsignindex=re.search('=',command)
     if equalsignindex is None:
-        raise Exception("Improper syntax : no '=' sign detected in line "+command)
+        raise ParserException("Improper syntax : no '=' sign detected in line "+command)
     left=command[:equalsignindex.start()]
     right=command[equalsignindex.end():]
     if 'where' in command.lower():
@@ -82,7 +83,7 @@ def checkParameter(parameter,constants=[],arrays={}):
         if 'arrays' in parameter:
             parameterindex=re.search('\[.*\]',parameter)
             if parameterindex is None:
-                raise Exception('Missing [ or ]')
+                raise ParserException('Missing [ or ]')
             parameter=parameter[parameterindex.start()+1:parameterindex.end()-1]
             found=False
             for name in arrays.keys(): #Find the array in question
@@ -90,7 +91,7 @@ def checkParameter(parameter,constants=[],arrays={}):
                     found=True
                     parameterindex=re.search('\[.*\]',parameter)
                     if parameterindex is None:
-                        raise Exception('Missing [ or ]')
+                        raise ParserException('Missing [ or ]')
                     parameter=parameter[parameterindex.start()+1:parameterindex.end()-1]
                     try:
                         if int(parameter) is not None:
@@ -100,7 +101,7 @@ def checkParameter(parameter,constants=[],arrays={}):
                             if parameter==c:
                                 return -1 #example: T[arrays[values[N]]]
             if not found:
-                raise Exception("Unknown array "+parameter)
+                raise ParserException("Unknown array "+parameter)
     return parameter
 
 
@@ -110,7 +111,7 @@ def extractLeftParameter(left,constants=[],arrays={}):
       if 'answer' in left or 'default' in left:
           return -1 #no parameter=>this is an answer line or a default line
       else:
-          raise Exception("Missing [ or ] in "+left)
+          raise ParserException("Missing [ or ] in "+left)
 
     parameter=left[parameterindex.start()+1:parameterindex.end()-1]
     parameter=checkParameter(parameter,constants,arrays)
@@ -124,8 +125,8 @@ def massSplitOneDFor(command,left,constants=[],arrays={}):
   param=extractLeftParameter(left,constants,arrays)
   if param!=-1:
     paramindex=re.search('\s'+param+'\s',forclause)
-    if paramindex is None:
-      raise Exception('undefined loop parameter '+param+" in "+left+"="+command)
+    # if paramindex is None:
+    #   raise ParserException('undefined loop parameter '+param+" in "+left+"="+command)
   forclause=re.sub(':',',',forclause)
   rangeindex=re.search('\s+[^\s]+,[^\s]+\s*',forclause)
   forclause=forclause[:rangeindex.start()]+' range('+forclause[rangeindex.start()+1:rangeindex.end()]+'):'
@@ -142,8 +143,8 @@ def massSplitOneDWhere(command,left,constants=[],arrays={}):
   param=extractLeftParameter(left,constants,arrays)
   if param!=-1:
     paramindex=re.search('\s'+param+'\s',forclause)
-    if paramindex is None:
-      raise Exception('undefined loop parameter '+param) 
+    # if paramindex is None:
+    #   raise ParserException('undefined loop parameter '+param)
   forclause=re.sub(':',',',forclause)
   rangeindex=re.search('\s+[^\s]+,[^\s]+\s*',forclause)
   forclause=forclause[:rangeindex.start()]+' range('+forclause[rangeindex.start()+1:rangeindex.end()]+'):'
@@ -156,28 +157,25 @@ def massSplitOneDWhere(command,left,constants=[],arrays={}):
   forclause+="\n\t\texcept(ValueError):"
   forclause+="\n\t\t\t"+left+"="+"default"
   forclause+="\n\t\t\t"+bp+"="+"-1"
-
   return forclause
 
 def extractFunctionAndArgument(function):
   argumentindex=re.search('\(.*\)',function)
   if argumentindex is None:
-    raise Exception("Missing ( or ) in " + function)
+    raise ParserException("Missing ( or ) in " + function)
   effectivefunction = function[:argumentindex.start()]
   if 'min' not in effectivefunction and 'max' not in effectivefunction:
-    raise Exception("Outside function needs to be min or max")
+    raise ParserException("Outside function needs to be min or max")
   argument=function[argumentindex.start()+1:argumentindex.end()-1]
   return (effectivefunction,argument)
 
 def extractLeftParameterTwoD(left,constants=[],arrays={}):
   parameterindex=re.search('\[.*\]\[.*\]',left)
-
   if parameterindex is None:
-
       if 'answer' in left or 'default' in left:
           return (-1,-1) #no parameter=>this is an answer line or a default line
       else:
-          raise Exception("Missing [ or ] in "+left)
+          raise ParserException("Missing [ or ] in "+left)
 
   parameter1index=re.search('\[.*\]\[',left)
   parameter1=left[parameter1index.start()+1:parameter1index.end()-2]
@@ -196,12 +194,12 @@ def massSplitTwoDOneFor(left,right,constants=[],arrays={}):
   parameter1,parameter2=extractLeftParameterTwoD(left,constants,arrays)
   if parameter1!=-1:
     paramindex=re.search('\s'+parameter1+'\s',forclause)
-    if paramindex is None:
-      raise Exception('undefined loop parameter '+parameter1+" in "+left+"="+right)
+    # if paramindex is None:
+    #   raise ParserException('undefined loop parameter '+parameter1+" in "+left+"="+right)
   if parameter2!=-1:
     paramindex=re.search('\s'+parameter2+'\s',forclause)
-    if paramindex is None:
-      raise Exception('undefined loop parameter '+parameter2+" in "+left+"="+right)
+  #   if paramindex is None:
+  #     raise ParserException('undefined loop parameter '+parameter2+" in "+left+"="+right)
   forclause=convertForClause(forclause)
   forclause+="\n\t"+left+"="+function
   return forclause
@@ -217,15 +215,15 @@ def convertForClause(forclause):
 def massSplitTwoDZeroFor(left,right,constants=[],arrays={}):
     parameter1,parameter2 = extractLeftParameterTwoD(left,constants,arrays);
     if parameter1!=-1:
-        raise Exception("Undefined parameter: "+parameter1 )
+        raise ParserException("Undefined parameter: "+parameter1 )
     if parameter2!=-1:
-        raise Exception("Undefined parameter: "+parameter2 )
+        raise ParserException("Undefined parameter: "+parameter2 )
     return left+"="+right
 
 def massSplitTwoDTwoFor(left,right,constants=[],arrays={}):
     parameter1,parameter2 = extractLeftParameterTwoD(left,constants,arrays)
     if parameter1==-1 or parameter2==-1:
-        raise Exception("Illegal parameter name in "+left)
+        raise ParserException("Illegal parameter name in "+left)
     forindex=re.finditer("for",right)
     firstindex=forindex.next()
     secondindex=forindex.next()
@@ -234,17 +232,16 @@ def massSplitTwoDTwoFor(left,right,constants=[],arrays={}):
     forclause1=right[firstindex.start():secondindex.start()-1]
     forclause2=right[secondindex.start():]
     paramindex=re.search('\s'+parameter1+'\s',forclauses)
-    if paramindex is None:
-      raise Exception('undefined loop parameter '+parameter1+" in "+left+"="+right)
-    paramindex=re.search('\s'+parameter2+'\s',forclauses)
-    if paramindex is None:
-      raise Exception('undefined loop parameter '+parameter2+" in "+left+"="+right)
+    # if paramindex is None:
+    #   raise ParserException('undefined loop parameter '+parameter1+" in "+left+"="+right)
+    # paramindex=re.search('\s'+parameter2+'\s',forclauses)
+    # if paramindex is None:
+    #   raise ParserException('undefined loop parameter '+parameter2+" in "+left+"="+right)
     forclause1=convertForClause(forclause1)
     forclause2=convertForClause(forclause2)
     result=forclause1+"\n\t"+forclause2
     if "min" in function or "max" in function:
         result+="\n\t\targuments=[]"
-        print function.rfind(')')
         function,args=splitFunction(function)
         args=args.split(',')
         result+="\n\t\ttry:"
@@ -262,7 +259,7 @@ def massSplitTwoDTwoFor(left,right,constants=[],arrays={}):
 def massSplitTwoD(command,constants=[],arrays={}):
   equalsignindex=re.search('=',command)
   if equalsignindex is None:
-        raise Exception("Improper syntax : no '=' sign detected in line "+command)
+        raise ParserException("Improper syntax : no '=' sign detected in line "+command)
   left=command[:equalsignindex.start()]
   right=command[equalsignindex.end():]
   result=re.findall("for",right)
@@ -305,26 +302,50 @@ def extract(value,string,arrays,cellvalue):
     
   return newstring
 
-def extract2d(value,value2,string,arrays):
-  forindex=re.search('for',string)
-  if not forindex:
-    return string
-  forclause=string[forindex.start():]
-  string=string[:forindex.start()]
-  arg=extractArgument(forclause)
-  t=re.finditer('\W'+arg+'\W',string)
-  newstring=""
-  start=0
-  while True:
-    try:
-      match=t.next()
-      newstring+=string[start:match.start()+1]+str(value)
-      start=match.end()-1
-    except:
-      newstring+=string[match.end()-1:]
-      break;
-      
-  return newstring
+def extract2d(values,string,arrays):
+    newstring=""
+    firstindex=re.search("for",string)
+    if not firstindex:
+        return string
+    newstring=string[:firstindex.start()]
+    forindex=re.finditer("for",string)
+    if not forindex:
+        return string
+    iterations=string.count("for")
+    for iteration in range(iterations):
+        index=forindex.next()
+        forclause=string[index.start():]
+        arg=extractArgument(forclause)
+        print arg
+        argiterator=re.finditer('\W'+arg+'\W',newstring)
+        while True:
+            try:
+                arg_index=argiterator.next()
+                newstring=newstring[:arg_index.start()+1]+str(values[iteration])+newstring[arg_index.end()-1:]
+            except StopIteration:
+                break
+
+        print newstring
+    return newstring
+        # temp=list(t)
+        # lent=len(temp)
+        # if lent==0:
+        #     raise ParserException("Argument "+arg+" never used")
+        # t=iter(temp)
+        # start=0
+        # while True:
+        #    try:
+        #         match=t.next()
+        #         newstring+=string[start:match.start()+1]+str(value)
+        #         start=match.end()-1
+        #    except:
+        #       if match:
+        #         newstring+=string[match.end()-1:]
+        #       break
+
+
+
+    return newstring
 
 
 def answerLine(command):

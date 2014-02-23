@@ -29,7 +29,7 @@ def solve(arrays, constants, commands, x, y):
         #print command
         parsedcommand = myparser2.massSplit2(command, arrays, constants.keys(), x != 1)
 
-
+        del(i)
         #print parsedcommand
         exec (parsedcommand)
 
@@ -46,7 +46,7 @@ def solve(arrays, constants, commands, x, y):
             for i in range(x):
                 for j in range(y):
                     if P[i][j] is None and T[i][j] is not None:
-                        P[i][j] = myparser2.extract2d(i, j, command, arrays)
+                        P[i][j] = myparser2.extract2d([i ,j], command, arrays)
 
     #print T
     #print P
