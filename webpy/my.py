@@ -19,6 +19,8 @@ from remove import remove
 from modify import modify
 from achievements import achievements
 from problemview import problemview
+
+from problemview2 import problemview2
 import re
 
 web.config.debug = False
@@ -28,6 +30,7 @@ urls = (
 '/register','register',
 '/signin','signin',
 '/problem','problemview',
+'/problem2','problemview2',
 '/collection','collection',
 '/try','mytry',
 '/admin','admin',

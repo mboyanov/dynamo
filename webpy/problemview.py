@@ -16,7 +16,9 @@ def top():
     raise web.seeother('/signin')
 
 def checksolution(idp,theircommands):
+  checks=[]
   data={}
+  answer=True
   data['idp']=idp
   problemdata=db.select('description',data,where='id=$idp')
   problemdata=problemdata[0]
@@ -32,24 +34,32 @@ def checksolution(idp,theircommands):
     if mysolution.answer is None and theirsolution.answer is None:
       
       if mysolution.table==theirsolution.table:
-	print "Try "+str(i)+":","TRUE TRUE  TRUE!!!!!!!!!!!"	
+	print "Try "+str(i)+":","TRUE TRUE  TRUE!!!!!!!!!!!"
+	
+	checks.append(["Succeeded with input:",constants,arrays,mysolution.table,theirsolution.table])
       else:
+	checks.append(["Failed with input:",constants,arrays,mysolution.table,theirsolution.table])
 	print "FALSE FALSE FALSE!!!!"
 	print "mine:"+str(mysolution.table)
 	print "theirs:"+str(theirsolution.table)
 	db.insert('user_input',id_user=web.ctx.session.userid,attempt=text,id_problem=idp,correct=0)
-	return False
+	answer=False
     #if one answer is None, return false. TODO: make them separate when you get messages
     elif (mysolution.answer is not None and theirsolution.answer is None) or (mysolution.answer is None and theirsolution.answer is not None) :
-      return False
+      checks.append(["You should specify an answer with the answer keyword"])
+      answer=False
     elif mysolution.answer!=theirsolution.answer:
-      return False
+      checks.append(["Wrong answer for input:",constants,arrays,mysolution.table,mysolution.answer,theirsolution.answer])
+      answer=False
+    elif mysolution.answer==theirsolution.answer:
+      checks.append(["Succeeded with input:",constants,arrays,mysolution.table,theirsolution.table,mysolution.answer,theirsolution.answer])
   db.insert('user_input',id_user=web.ctx.session.userid,attempt=text,id_problem=idp,correct=1)
   try:
-    db.insert('user_problems', id_user=web.ctx.session.userid,id_problem=idp)
+    db.replace('user_problems', id_user=web.ctx.session.userid,id_problem=idp)
   except:
-    pass
-  return True
+    return answer,checks
+  return answer,checks
+  
       
   
 
@@ -110,9 +120,8 @@ class problemview:
       try:
         theirsolution=solutioninstance(solver2.solve(web.ctx.session.instance.lists,web.ctx.session.instance.constants,commands,web.ctx.session.instance.dimensions[0],web.ctx.session.instance.dimensions[1]))
         print "THEIR SOLUTION:",theirsolution.table
-        correct=checksolution(web.ctx.session.idp,commands)
-	
-	
+        correct,checks=checksolution(web.ctx.session.idp,commands)	
+        
         if correct:
           achecker=achievementchecker()
           message=achecker.check(web.ctx.session.userid)
@@ -120,16 +129,23 @@ class problemview:
       except ParserException as e:
         correct=False
         if theirsolution is not None:
-          return render.problemtable(web.ctx.session.instance,mysolution,theirsolution.table,comments,correct)
+          return render.problemtable(web.ctx.session.instance,mysolution,theirsolution.table,comments,correct,e.message,theircommands=data['recterms'])
         else:
-          return render.problemtable(web.ctx.session.instance,mysolution,None,comments,correct,e.message)
-      except NameError as e:
+          return render.problemtable(web.ctx.session.instance,mysolution,None,comments,correct,e.message,theircommands=data['recterms'])
+      except (NameError,SyntaxError) as e:
         correct=False
         if theirsolution is not None:
-          return render.problemtable(web.ctx.session.instance,mysolution,theirsolution.table,comments,correct)
+          return render.problemtable(web.ctx.session.instance,mysolution,theirsolution.table,comments,correct,str(e),theircommands=data['recterms'])
         else:
-          return render.problemtable(web.ctx.session.instance,mysolution,None,comments,correct,e.message)
-      return render.problemtable(web.ctx.session.instance,mysolution,theirsolution.table,comments,correct=correct,message=message)
+          return render.problemtable(web.ctx.session.instance,mysolution,None,comments,correct,str(e),theircommands=data['recterms'])
+      except:
+          correct=False
+          if theirsolution is not None:
+            return render.problemtable(web.ctx.session.instance,mysolution,theirsolution.table,comments,correct,"Something went wrong",theircommands=data['recterms'])
+          else:
+	    return render.problemtable(web.ctx.session.instance,mysolution,None,comments,correct,"Something went wrong",theircommands=data['recterms'])
+      print "received checks length" ,len(checks)
+      return render.problemtable(web.ctx.session.instance,mysolution,theirsolution.table,comments,correct=correct,message=message,theircommands=data['recterms'],checks=checks)
     
     if data['action']=='new':
       constants=randomgenerator.getRandomConstants(problemdata.constants)

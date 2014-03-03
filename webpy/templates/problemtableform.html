@@ -1,4 +1,4 @@
-$def with(problem,solution,theirsolution,comments,correct=False,message='',theircommands=None,checks=None)
+$def with(problem,solution,theirsolution,comments,builders,correct=False,message='',theircommands=None,checks=None)
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
     
 <script type="text/javascript">-->
@@ -107,18 +107,39 @@ $if solution.show:
   Can you now input the recurrence relation?
 $else:
   Or can you input the recurrence relation?
-  
-<form name="recurrence" method="post"> 
-<textarea class="FormElement" name="recterms" id="term" cols="40" rows="4">
-$if theircommands:
-  $theircommands
 
-$elif context.hintlevel>0:
-  $context.hint
-</textarea>
-<input type="submit" class="input" name="hint" value="Hint me" title="You can press this button to view part of the solution to the problem!">
+<form name="recurrence2" method="post">
+
+$for commandrow in range(6):
+    <br>
+    <select name="left$commandrow">
+    <option value=""></option>
+    $for left in builders[0]:
+            <option value="$left"> $left </option>
+     </select>
+    =
+    <select name="function$commandrow">
+    <option value=""></option>
+    $for function in builders[1]:
+        <option value="$function"> $function</option>
+
+    </select>
+    $if len(builders)>2 and len(builders[2])>1:
+        <select name="forclause$commandrow">
+        <option value=""></option>
+        $for forclause in builders[2]:
+            <option value="$forclause"> $forclause</option>
+        </select>
+    $if len(builders)>3 and len(builders[3])>1:
+        <select name="whereclause$commandrow">
+        <option value=""></option>
+        $for whereclause in builders[3]:
+            <option value="$whereclause"> $whereclause</option>
+        </select>
+    <br>
 <input type="submit" class="input">
 </form>
+
 
 
 
@@ -145,7 +166,7 @@ $if correct:
 
 
 $if checks:
-  <div><h1> Validation</h1> </div>
+  <h1> Validation</h1>
   <input type="button" class="input" onclick="show_hide('validation');" value="Click to expand validation">
   <div id="validation" style="display:none">
 

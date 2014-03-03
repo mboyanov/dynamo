@@ -26,11 +26,13 @@ def solve(arrays, constants, commands, x, y):
             continue
         if 'import' in command or 'exec' in command:
             return None
-        #print command
-        parsedcommand = myparser2.massSplit2(command, arrays, constants.keys(), x != 1)
 
-        del(i)
-        #print parsedcommand
+        parsedcommand = myparser2.massSplit2(command, arrays, constants.keys(), x != 1)
+        try:
+            del(i)
+        except:
+            pass
+        print (parsedcommand)
         exec (parsedcommand)
 
         if x == 1:

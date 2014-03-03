@@ -4,3 +4,9 @@ class solutioninstance:
     self.table=table
     self.path=path
     self.answer=answer
+    if type(self.table)==type([]):
+        self.length=len(self.table)
+    else:
+        self.length=len(self.table)*len(self.table[0])
+
+    print type(self.table)
