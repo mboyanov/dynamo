@@ -1,9 +1,10 @@
 from xhtml2pdf import pisa             # import python module
 import web
+import config
 class pdfgenerator:
 # Define your data
   def generateHtmlFromId(self,name,id):
-    db = web.database(dbn='mysql', db='web', user='root', pw='xaxaxa')
+    db = config.getDB()
     data={}
     data['id']=id
     achievementdata=db.select('achievements',data,where='id=$id')
@@ -32,12 +33,7 @@ class pdfgenerator:
     # return True on success and False on errors
     return pisaStatus.err
 
-generator= pdfgenerator()
-sourceHtml=generator.generateHtmlFromId('Bojidar Vidinov',1)
-outputFilename = "test.pdf"
-
-# Utility function
 
 
-# Main program
+
 

@@ -1,5 +1,6 @@
-import web
-db = web.database(dbn='mysql', db='web', user='root', pw='xaxaxa')
+
+from config import *
+db = getDB()
 
 class achievementchecker:
   def __init__(self):
@@ -25,5 +26,3 @@ class achievementchecker:
 	self.message+='<br>Congratulations! You unlocked the '+data['title']+' achievement! <br> <img src="'+data['url']+'"> <br> Go to the <A href="/achievements">Achievements page </A> to generate your certificate!'
     return self.message
   
-achecker=achievementchecker()
-achecker.check(3)

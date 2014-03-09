@@ -1,0 +1,157 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family:Arial, Helvetica, sans-serif;
+}
+label,tr,th{
+  text-align:left;
+}
+.none{
+text-align:left;
+  
+}
+
+
+.collectionproblem{
+text-align:center;
+margin: 2px 2px 2px 2px;
+border-radius: 15px;
+padding: 2px 2px 2px 2px;
+  
+  
+}
+
+table{
+  width:80%;
+  border: 0px;
+}
+
+.input {     
+	border-top:		2px solid #a3ceda;
+	border-left:		2px solid #a3ceda;
+	border-right:		2px solid #4f6267;
+	border-bottom:		2px solid #4f6267;
+	border-radius: 15px;
+	padding:		5px 10px !important;
+	font-size:		14px !important;
+	background-color:	rgb(0,144,227);
+	
+	
+} 
+
+.input:hover{
+ color: rgb(255,255,255);
+}
+
+
+a {
+    color: #000000;
+    text-decoration: none;
+}
+a:hover {
+    color:rgb(255,255,255);
+}
+
+
+
+.td{
+
+margin:0;
+
+padding:0;
+border-width:1px;
+border-style:solid;
+border-radius:15px;
+
+font-size:100%;
+vertical-align:baseline;
+text-align:center;
+	  
+}
+
+
+
+div#top {
+  
+  width:97.5%;
+  margin-left:10px;
+  margin-right:10px;
+  background: rgb(0,144,227);
+ display: inline-block;
+  border-radius: 15px;
+ padding:10px 10px 10px 10px;
+} 
+
+div#content{
+display: inline;
+
+}
+
+div#left {
+  margin:10px 0px 10px 10px;
+  background: rgb(0,144,227);
+  float:left;
+  padding: 1% 1% 1% 1%;
+  min-width:10%;
+  height:80%;	
+  border-radius: 15px;
+} 
+
+div#main {
+  margin-top:20px;
+  max-width:82%;
+  min-width:82%;
+  min-height:80%;
+  background: rgb(255,255,255);
+  float:left;
+  margin: 10px 0 0 10px;
+  padding:1% 1% 1% 1%;
+  border-width:1px;
+  border-style:solid;
+  border-radius:15px;
+  
+  
+} 
+
+div#achievement{
+  margin-top:10px;
+  border-width:1px;
+  border-style:solid;
+  border-radius:15px;
+  margin-bottom:10px;
+  padding:10px;
+}
+
+div.inline { float:left; }
+.clearBoth { clear:both; }
+
+div#achievementtitle{
+  margin-top:10px;
+  border-width:1px;
+  border-style:solid;
+  border-radius :15px;
+  width: 30%;
+}
+
+.comment {
+  margin-top:20px;
+  background: rgb(255,255,255);
+ 
+  margin: 10px 10px 10px 0px;
+  padding:1% 1% 1% 1%;
+  border-width:1px;
+  border-style:solid;
+  border-radius:15px;
+  
+} 
+
+
+div:img{
+  float:right
+}
+
+
+
+
+
+

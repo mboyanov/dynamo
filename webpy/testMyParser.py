@@ -1,6 +1,7 @@
 __author__ = 'marty'
 
 import unittest
+import testRandomGenerator
 from myparser2 import *
 # Here's our "unit".
 
@@ -28,6 +29,7 @@ class parserTests(unittest.TestCase):
 
 def main():
     unittest.main()
+
 
 if __name__ == '__main__':
     main()

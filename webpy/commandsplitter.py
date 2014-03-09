@@ -11,9 +11,9 @@ class splitter:
         self.functions=set()
         self.whereclauses=set()
         if (istwod):
-            self.lefts={"T[0][0]","T[i][j]","T[j][i]"}
+            self.lefts=set(["T[0][0]","T[i][j]","T[j][i]"])
         else:
-            self.lefts={"T[0]","T[i]"}
+            self.lefts=set(["T[0]","T[i]"])
 
     def split(self,commands):
         for command in commands:
@@ -65,5 +65,5 @@ class splitter:
                         pass
         return self.lefts,self.functions,self.forclauses,self.whereclauses
 
-msplitter=splitter(False)
-print msplitter.split(commands)
+#msplitter=splitter(False)
+#print msplitter.split(commands)

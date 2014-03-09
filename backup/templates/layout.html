@@ -1,0 +1,63 @@
+$def with (content)
+
+<head>
+<link rel="shortcut icon" href="/static/icon.ico">
+
+<title>Dynamo</title>
+<link href="/static/maincss.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript">
+
+
+function highlight(id,value){
+var elem = document.getElementById(id);
+elem.title=value;
+}
+
+function unhighlight(elem){
+elem.style.backgroundColor="rgb(0,144,227)";
+}
+
+function show_hide(id){
+var elem=document.getElementById(id);
+if (elem.style.display=='none') elem.style.display='inline';
+else elem.style.display='none';
+}
+
+</script>
+
+</head>
+
+<body>
+<div id="top">
+<img style="float: right;" src="/static/logo.png">
+</div>
+<div id="content">
+  <div id="left">
+  <center>Menu </center>
+  <ul> 
+ <A href="/collection" class="f"> <li>Get Dynamic </A>
+ <A href="/achievements"> <li> Achievements </A>
+  <li> Extras
+  <li> Account 
+ <A href='/signout'> <li> Sign out </A>
+   </ul>
+  </div>
+
+  <div id="main">
+  
+ 
+  
+$:content
+
+ 
+  </div>
+  </div>
+  
+
+  
+  
+
+  
+</body>
+</html> 

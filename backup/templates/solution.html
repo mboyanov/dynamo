@@ -1,0 +1,27 @@
+$def with(problem)
+<script type="text/javascript">
+function toggle(obj) {
+          var obj=document.getElementById(obj);
+          if (obj.style.display == "block") obj.style.display = "none";
+          else obj.style.display = "block";
+}
+</script>
+ <a href="javascript: void(0);" onClick="toggle('q1')">The integer knapsack problem is a 1D dynamic programming problem. </a>
+<div id="q1" style="display:none;">We have a table where T[i] holds the optimal value which can be obtained for a knapsack with capacity i.
+ Obviously T[0]=0. 
+ We then define T[C]= max(v[i]+T[C-w[i]]) where we iterate over all items with weights less than or equal to C .</div>
+ 
+ 
+ 
+ 
+  $:problem.solution 
+  
+ 
+  <br><br>
+  Now try to enter the recurrence relation yourself:
+   <form name="recurrence" method="post"> 
+   <textarea class="FormElement" name="action" id="term" cols="40" rows="4"></textarea>
+   <input type="submit" class="input">
+   </form>
+  
+  

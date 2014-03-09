@@ -29,7 +29,7 @@ class register:
             return render.register(f)
         else:
 	  i=web.input()
-	  db = web.database(dbn='mysql', db='web', user='root', pw='xaxaxa')
+	  db = config.getDB()
 	  n = db.insert('example_users', user=i.username,passw=hashlib.md5(i.password).hexdigest())
 	  raise web.seeother('/signin')
            

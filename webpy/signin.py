@@ -19,7 +19,7 @@ class signin:
   def POST(self):
     i=web.input()
     vars=dict(user=str(i.username))
-    db = web.database(dbn='mysql', db='web', user='root', pw='xaxaxa')
+    db = config.getDB()
     result=db.select('example_users',vars,where="user =$user")
     result=result[0]
     if hashlib.md5(i.password).hexdigest()==result['passw']:

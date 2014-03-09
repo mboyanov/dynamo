@@ -1,0 +1,31 @@
+$def with (achievements)
+
+$for i in achievements:
+  $if i.user_id:
+    <div id="achievement">
+    <center> <div id="achievementtitle">$i.title </div> </center>
+    <br>
+    <div class="inline"> <img src="$i.url" width="600px"> </div>
+    <div class="inline"> 
+      $i.description 
+	<br>
+      <form name="regen" method="post"> 
+	<input type="text" name="achievement_id" value="$i.id" hidden="true">
+	<input type="text" name="person" >
+      <input type="submit" value="Generate Certificate" class="input">
+    </form></div>
+    <br class="clearBoth" />
+    </div>
+  $else:
+    <div id="achievement">
+    <center> <div id="achievementtitle">$i.title </div> </center>
+    <br>
+    $code:
+      url=i.url+'2'
+    <div class="inline"> <img src="$url" width="600px"> </div>
+    <div class="inline"> 
+      $i.description 
+	<br>
+      </div>
+    <br class="clearBoth" />
+    </div>

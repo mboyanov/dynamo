@@ -7,6 +7,7 @@ import solver2
 import randomgenerator
 import config
 import re
+from top import top
 
 render = web.template.render(config.templatedir,base="layout")
 
@@ -16,10 +17,7 @@ problem_form = form.Form(
     form.Number('dimension_x',form.notnull,form.Validator('Must be a positive value', lambda x:int(x)>0),description="Dimension X:", ),
     form.Number('dimension_y',form.notnull,form.Validator('Must be a positive value', lambda x:int(x)>0),description="Dimension Y:",),
 )
-def top():
-  
-  if web.ctx.session.user is None or web.ctx.session.user!='admin':
-    raise web.seeother('/signin')
+
 class admin:
 
   
@@ -28,6 +26,8 @@ class admin:
     top()
     f=problem_form()
     return render.admin(f)
+
+
   def POST(self):
     top()
     i=web.input(constantsnames=[],constantsmin=[],constantsmax=[],arraysnames=[],arraysmin=[],arraysmax=[],arraysnum=[],hintsnames=[])
@@ -35,7 +35,7 @@ class admin:
     if f.validates()==False:
       return 'Please provide a name for the problem,a difficulty and positive dimensions'
     out=""
-    db = web.database(dbn='mysql', db='web', user='root', pw='xaxaxa')
+    db = config.getDB()
     hints=[]
     
     for  t in range(len(i.hintsnames)):

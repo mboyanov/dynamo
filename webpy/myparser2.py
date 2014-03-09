@@ -32,7 +32,6 @@ def splitFunction(function):
     value = function[b + 1:c]
     function = function[:b]
 
-    # print value
     return function, value
 
 
@@ -409,10 +408,10 @@ def answerLine(command):
     return command
 
 
-print massSplit2("T[0][i]=0 for i in 1:N", {}, [], True)
+# print massSplit2("T[0][i]=0 for i in 1:N", {}, [], True)
 # print massSplit2("T[i][0]]=0 for i in 1:N",{},[],True)
-print massSplit2("T[a][b]=1 for a in 1:N for b in 1:N", {}, [], True)
+# print massSplit2("T[a][b]=1 for a in 1:N for b in 1:N", {}, [], True)
 
-print massSplit2(
-    "T[i][j]=min(T[i-1][j]+1,T[i][j-1]+1,T[i-1][j-1]+(word1[i-1]!=word2[j-1])) for i in 1:n+1 for j in 1:n+1",
-    {'word1': [], 'word2': []}, [], True)
+# print massSplit2(
+#     "T[i][j]=min(T[i-1][j]+1,T[i][j-1]+1,T[i-1][j-1]+(word1[i-1]!=word2[j-1])) for i in 1:n+1 for j in 1:n+1",
+#     {'word1': [], 'word2': []}, [], True)

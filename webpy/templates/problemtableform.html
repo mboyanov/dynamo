@@ -58,13 +58,9 @@ $if problem.video is not None:
 
 
 
-<p>
-To see an explanation of the table put your pointer <i title="$problem.tableexplanation"> here </i>. <p>
 
-$if solution.show:
-  Here are the correct values for this instance:
-$else:
-  Can you input the correct values for this instance?
+
+You can explore the solution to this instance by using the buttons above and hovering your mouse over the computed values.
 <form name="main" method="post"> 
 $code:
   if problem.dimensions[0]==1:
@@ -100,13 +96,14 @@ $for i in range(rows):
     
     <input type="text" size="3" maxlength="3" id="$id" name="$id" value='$value' title='$path'  class="td" >
   
-<input type="submit" class="input">
+
 </form>
-  
-$if solution.show:
-  Can you now input the recurrence relation?
-$else:
-  Or can you input the recurrence relation?
+<p>
+To see an explanation of the table put your pointer <i title="$problem.tableexplanation"> here </i>. <p>
+
+Please input the recurrence relation using either the command-based mode or the menu-based mode. You are currently using the menu-based mode.
+<br>
+To switch to a command-based mode<A href="problem?idp=$context.idp"> click here</A>.
 
 <form name="recurrence2" method="post">
 
@@ -224,7 +221,7 @@ $if message:
 <h1> Comment </h1>  
 <form method="post">
 <input type="hidden" name="action" value="comment">
-<textarea name="comment" cols="40" rows="4"></textarea>
+<textarea name="comment" cols="40" rows="4" class="box"></textarea>
 <input type="submit" class="input">
 </form>
 $for comment in comments:

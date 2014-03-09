@@ -6,11 +6,11 @@ $for i in range(len(problems)):
   $code:
     problem=problems[i]
   $if i%5==0:
-    <tr> 
+    <tr>
   $if problem.id not in progress:
     <td bgcolor="FFFFFF" class="collectionproblem">
   $else:
-    <td bgcolor="00FF00" class="collectionproblem">
+    <td bgcolor="008EF3" class="collectionproblem">
   <A href='problem?idp=$problem.id'> $problem.name </A>
   </td>
   

@@ -38,13 +38,12 @@ $if problem.hints is not None:
 <br>
     
 $if problem.video is not None:
-  <input type="button" class="input" onclick="show_hide('vid');" value="Video"> <br>
- <center> <div id="vid" style="display:none"> <video controls> <source src="$problem.video" > </video> </div> </center>
+    <input type="button" class="input" onclick="show_hide('vid');" value="Video"> <br>
+    <center> <div id="vid" style="display:none"> <video controls> <source src="$problem.video" > </video> </div> </center>
 <form name="regen" method="post">
 <input type="text" name="action" value="new" hidden="true">
-<input type="submit" value="Generate new instance" class="input">
+<input type="submit"  value="Generate new instance" class="input">
 </form>
-
 <form name="regen" method="post">
 <input type="text" name="action" value="showsolution" hidden="true">
 <input type="submit" value="View Instance Solution" class="input">
@@ -58,13 +57,7 @@ $if problem.video is not None:
 
 
 
-<p>
-To see an explanation of the table put your pointer <i title="$problem.tableexplanation"> here </i>. <p>
-
-$if solution.show:
-  Here are the correct values for this instance:
-$else:
-  Can you input the correct values for this instance?
+You can explore the solution to this instance by using the buttons above and hovering your mouse over the computed values.
 <form name="main" method="post"> 
 $code:
   if problem.dimensions[0]==1:
@@ -100,16 +93,20 @@ $for i in range(rows):
     
     <input type="text" size="3" maxlength="3" id="$id" name="$id" value='$value' title='$path'  class="td" >
   
-<input type="submit" class="input">
+
 </form>
-  
-$if solution.show:
-  Can you now input the recurrence relation?
-$else:
-  Or can you input the recurrence relation?
-  
+
+
+
+<p>
+To see an explanation of the table put your pointer <i title="$problem.tableexplanation"> here </i>. <p>
+
+Please input the recurrence relation using either the command-based mode or the menu-based mode. You are currently using the command-based mode.
+<br>
+To switch to a menu-based version of the solution <A href="problem2?idp=$context.idp" >click here</A> .
+
 <form name="recurrence" method="post"> 
-<textarea class="FormElement" name="recterms" id="term" cols="40" rows="4">
+<textarea id="rec"  name="recterms" id="term" cols="40" rows="4" class="box">
 $if theircommands:
   $theircommands
 
@@ -203,7 +200,7 @@ $if message:
 <h1> Comment </h1>  
 <form method="post">
 <input type="hidden" name="action" value="comment">
-<textarea name="comment" cols="40" rows="4"></textarea>
+<textarea name="comment" cols="40" rows="4" class="box"></textarea>
 <input type="submit" class="input">
 </form>
 $for comment in comments:

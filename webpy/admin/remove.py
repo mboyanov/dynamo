@@ -2,6 +2,8 @@ import web
 import hashlib
 from web import form
 import config
+from top import top
+from config import *
 
 render = web.template.render(config.templatedir,base="layout")
 
@@ -11,12 +13,9 @@ problem_form = form.Form(
     form.Number('dimension_x',form.notnull,description="Dimension X:", ),
     form.Number('dimension_y',form.notnull,description="Dimension Y:",),
 )
-db = web.database(dbn='mysql', db='web', user='root', pw='xaxaxa')
+db = getDB()
 
-def top():
-  
-  if web.ctx.session.user is None or web.ctx.session.user!='admin':
-    raise web.seeother('/signin')
+
 
 class remove:
  

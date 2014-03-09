@@ -17,9 +17,9 @@ text-align:center;
 margin: 2px 2px 2px 2px;
 border-radius: 15px;
 padding: 2px 2px 2px 2px;
-  
-  
 }
+
+
 
 table{
   width:80%;
@@ -27,14 +27,14 @@ table{
 }
 
 .input {     
-	border-top:		2px solid #a3ceda;
-	border-left:		2px solid #a3ceda;
+	border-top:		2px solid #BF8130;
+	border-left:		2px solid #BF8130;
 	border-right:		2px solid #4f6267;
 	border-bottom:		2px solid #4f6267;
 	border-radius: 15px;
 	padding:		5px 10px !important;
 	font-size:		14px !important;
-	background-color:	rgb(0,144,227);
+	background-color:	#FFAC40;
 	
 	
 } 
@@ -45,14 +45,19 @@ table{
 
 
 a {
-    color: #000000;
+    color: #00FF00;
     text-decoration: none;
 }
 a:hover {
-    color:rgb(255,255,255);
+    color: #FF9000;
 }
 
-
+.box{
+border: 1px solid #000;`
+border-style:solid;
+border-radius:15px;
+padding: 10px;
+}
 
 .td{
 
@@ -77,7 +82,7 @@ padding:0;
 border-width:1px;
 border-style:solid;
 border-radius:15px;
-background-color:rgb(0,255,0);
+background-color: #00F64A;
 font-size:100%;
 vertical-align:baseline;
 text-align:center;
@@ -92,7 +97,7 @@ padding:0;
 border-width:1px;
 border-style:solid;
 border-radius:15px;
-background-color:rgb(255,0,0);
+background-color: #FF2300;
 font-size:100%;
 vertical-align:baseline;
 text-align:center;
@@ -119,7 +124,7 @@ display: inline;
 
 div#left {
   margin:10px 0px 10px 10px;
-  background: rgb(0,144,227);
+  background: #008EF3;
   float:left;
   padding: 1% 1% 1% 1%;
   min-width:10%;
@@ -132,7 +137,7 @@ div#main {
   max-width:82%;
   min-width:82%;
   min-height:80%;
-  background: rgb(255,255,255);
+  background:  #FFFFFF;
   float:left;
   margin: 10px 0 0 10px;
   padding:1% 1% 1% 1%;

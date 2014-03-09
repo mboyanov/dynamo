@@ -9,66 +9,14 @@ import solver2
 from ParserException import ParserException
 from achievementchecker import achievementchecker
 from commandsplitter import splitter
-
-db = web.database(dbn='mysql', db='web', user='root', pw='xaxaxa')
+from top import top
+from config import *
+from solutionchecker import checksolution
+db = getDB()
 render = None
 
 
-def top():
-    if web.ctx.session.user is None or web.ctx.session.user == '':
-        raise web.seeother('/signin')
 
-
-def checksolution(idp, theircommands):
-    checks = []
-    data = {}
-    answer = True
-    data['idp'] = idp
-    problemdata = db.select('description', data, where='id=$idp')
-    problemdata = problemdata[0]
-    commands = re.split('[\n\r]+', problemdata.recurrence)
-    text = '\n'.join(theircommands)
-    for i in range(10):
-        constants = randomgenerator.getRandomConstants(problemdata.constants)
-        arrays = randomgenerator.getRandomArrays(problemdata.arrays)
-        t = problem('<p>' + problemdata.description, arrays, constants, (problemdata.dimension_y, 20),
-                    problemdata.solutiontext, problemdata.tableexplanation)
-        mysolution = solutioninstance(solver2.solve(t.lists, t.constants, commands, t.dimensions[0], t.dimensions[1]))
-        theirsolution = solutioninstance(
-            solver2.solve(t.lists, t.constants, theircommands, t.dimensions[0], t.dimensions[1]))
-        #both answers are none-just output tables
-        if mysolution.answer is None and theirsolution.answer is None:
-
-            if mysolution.table == theirsolution.table:
-                print "Try " + str(i) + ":", "TRUE TRUE  TRUE!!!!!!!!!!!"
-
-                checks.append(["Succeeded with input:", constants, arrays, mysolution.table, theirsolution.table])
-            else:
-                checks.append(["Failed with input:", constants, arrays, mysolution.table, theirsolution.table])
-                print "FALSE FALSE FALSE!!!!"
-                print "mine:" + str(mysolution.table)
-                print "theirs:" + str(theirsolution.table)
-                db.insert('user_input', id_user=web.ctx.session.userid, attempt=text, id_problem=idp, correct=0)
-                answer = False
-        #if one answer is None, return false. TODO: make them separate when you get messages
-        elif (mysolution.answer is not None and theirsolution.answer is None) or (
-                        mysolution.answer is None and theirsolution.answer is not None):
-            checks.append(["You should specify an answer with the answer keyword"])
-            answer = False
-        elif mysolution.answer != theirsolution.answer:
-            checks.append(["Wrong answer for input:", constants, arrays, mysolution.table, mysolution.answer,
-                           theirsolution.answer])
-            answer = False
-        elif mysolution.answer == theirsolution.answer:
-            checks.append(
-                ["Succeeded with input:", constants, arrays, mysolution.table, theirsolution.table, mysolution.answer,
-                 theirsolution.answer])
-    db.insert('user_input', id_user=web.ctx.session.userid, attempt=text, id_problem=idp, correct=1)
-    try:
-        db.replace('user_problems', id_user=web.ctx.session.userid, id_problem=idp)
-    except:
-        return answer, checks
-    return answer, checks
 
 
 def build(input):
@@ -80,11 +28,12 @@ def build(input):
         if ('function'+str(i)) in input:
             command+=input['function'+str(i)]
         if ('forclause'+str(i)) in input:
-            command+=' '+input['forclause'+str(i)]
+            command+=' '+input['forclause'+str(i)] + ' '
         if ('whereclause'+str(i)) in input:
             command+=input['whereclause'+str(i)]
         if command.encode()!=' ':
             commands.append(command.encode())
+    print "Commands built:" + str(commands)
     return commands
 
 
@@ -129,7 +78,6 @@ class problemview2:
 
     def POST(self):
         top()
-
         render = web.template.render(config.templatedir, base='layout', globals={'context': web.ctx.session})
         problemdata = db.select('description', web.ctx.session, where='id=$idp')
         problemdata = problemdata[0]
@@ -169,6 +117,7 @@ class problemview2:
                     return render.problemtableform(web.ctx.session.instance, mysolution, None, comments, builders, correct,
                                                e.message, theircommands=commands)
             except (NameError, SyntaxError) as e:
+                print e
                 correct = False
                 if theirsolution is not None:
                     return render.problemtableform(web.ctx.session.instance, mysolution, theirsolution.table, comments,
@@ -205,15 +154,15 @@ class problemview2:
         elif data['action'] == 'showsolution':
             mysolution.show = True
             web.ctx.session.solutionindex = mysolution.length
-            return render.problemtable(web.ctx.session.instance, mysolution, None, comments)
+            return render.problemtableform(web.ctx.session.instance, mysolution, None, comments,builders)
         elif data['action'] == 'nextvalue':
             mysolution.show = True
             web.ctx.session.solutionindex += 1
-            return render.problemtable(web.ctx.session.instance, mysolution, None, comments)
+            return render.problemtableform(web.ctx.session.instance, mysolution, None, comments,builders)
         elif data['action'] == 'comment':
             db.insert('comment', user_id=web.ctx.session.userid, problem_id=web.ctx.session.idp,
                       comment=data['comment'])
             comments = db.query(
                 'select * from example_users eu join comment c on c.user_id=eu.id where c.problem_id=' + web.ctx.session.idp)
 
-            return render.problemtable(web.ctx.session.instance, mysolution, None, comments)
+            return render.problemtableform(web.ctx.session.instance, mysolution, None, comments,builders)

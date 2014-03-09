@@ -13,7 +13,8 @@ from signin import signin
 from web import form
 import random
 from collections import defaultdict
-
+from top import top
+from config import *
 from index import admin
 from remove import remove
 from modify import modify
@@ -32,7 +33,6 @@ urls = (
 '/problem','problemview',
 '/problem2','problemview2',
 '/collection','collection',
-'/try','mytry',
 '/admin','admin',
 '/remove','remove',
 '/modify','modify',
@@ -42,7 +42,7 @@ urls = (
 
 
 app = web.application(urls, globals())
-db = web.database(dbn='mysql', db='web', user='root', pw='xaxaxa')
+db = getDB()
 store = web.session.DBStore(db, 'sessions')
 
 session = web.session.Session(app, store, initializer={'solutionindex': 0,'login': 0, 'privilege': 0,'user' :'','userid':'','idp':-1,'instance':['a'],'problemstatus':-1,'hintlevel':0,'hint':''})
@@ -52,9 +52,7 @@ import config
 
 render = web.template.render(config.templatedir,base='layout',globals={'context': session})
 
-def top():
-  if web.ctx.session.user is None or web.ctx.session.user=='':
-    raise web.seeother('/signin')
+
 
 def session_hook():
     web.ctx.session = session

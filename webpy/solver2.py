@@ -50,8 +50,7 @@ def solve(arrays, constants, commands, x, y):
                     if P[i][j] is None and T[i][j] is not None:
                         P[i][j] = myparser2.extract2d([i ,j], command, arrays)
 
-    #print T
-    #print P
+
     return T, P, answer
 
 
