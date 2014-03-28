@@ -1,0 +1,40 @@
+$def with (message=None)
+$if message:
+        $:message
+<form name="survey" method="post">
+    <center>
+
+    <div class="comment"> I am primarily studying/working in
+    <select name="field" required>
+        <option value="">Please Select</option>
+        <option value="math">Mathematics</option>
+        <option value="cs">Computer Science</option>
+        <option value="other_science">Other Natural Science/Engineering</option>
+        <option value="other">Other</option>
+    </select>.<br></div>
+  <div class="comment" >  I found the Dynamo system easy to work with:<br>
+   Points: 0<input type="range" name="system" min="1" max="10"  required>10 </div>
+
+ <div class="comment" >   I found the syntax of the Dynamo system easy to use:<br>
+    Points: 0<input type="range" name="syntax" min="1" max="10" required>10 </div>
+
+  <div class="comment" >   I found the texts and hints of the Dynamo system helpful:<br>
+    Points: 0<input type="range" name="hints" min="1" max="10" required>10 </div>
+
+  <div class="comment" >   I believe that adding a video walkthrough will be helpful:<br>
+    Points: 0<input type="range" name="syntax" min="1" max="10" required>10 </div>
+
+        <div class="comment" > I like the command-based mode better than the menu based mode: <br>
+    Points: 0<input type="range" name="commandvsmenu" min="1" max="10" required>10 </div>
+
+        <div class="comment" > The menu-based mode lets me concentrate on understanding and solving the problem: <br>
+    Points: 0<input type="range" name="menuconcentration" min="1" max="10" required>10 </div>
+
+         <div class="comment" > The menu-based mode is restrictive: <br>
+    Points: 0<input type="range" name="menurestrictive" min="1" max="10" required>10 </div>
+
+
+      <div class="comment"> Comment: <br> <textarea name="comment" class="comment"></textarea> </div>
+<input type="submit" class="input">
+</center>
+</form>

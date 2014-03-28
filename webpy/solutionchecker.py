@@ -4,6 +4,7 @@ from problem import problem
 import solver2
 from solution import solutioninstance
 import re
+import web
 db=config.getDB()
 def checksolution(idp, theircommands):
     checks = []

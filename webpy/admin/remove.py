@@ -13,7 +13,7 @@ problem_form = form.Form(
     form.Number('dimension_x',form.notnull,description="Dimension X:", ),
     form.Number('dimension_y',form.notnull,description="Dimension Y:",),
 )
-db = getDB()
+db = getAdminDB()
 
 
 

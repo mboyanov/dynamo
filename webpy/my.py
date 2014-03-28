@@ -20,7 +20,7 @@ from remove import remove
 from modify import modify
 from achievements import achievements
 from problemview import problemview
-
+from survey import survey
 from problemview2 import problemview2
 import re
 
@@ -37,7 +37,8 @@ urls = (
 '/remove','remove',
 '/modify','modify',
 '/signout','reset',
-'/achievements','achievements'
+'/achievements','achievements',
+'/survey','survey'
 )
 
 

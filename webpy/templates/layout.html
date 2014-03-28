@@ -2,10 +2,20 @@ $def with (content)
 
 <head>
 <link rel="shortcut icon" href="/static/icon.ico">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
 
 <title>Dynamo</title>
 <link href="/static/maincss.css" rel="stylesheet" type="text/css">
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
+  ga('create', 'UA-48846667-1', 'ec2-54-201-69-112.us-west-2.compute.amazonaws.com');
+  ga('send', 'pageview');
+
+</script>
 <script type="text/javascript">
 
 
@@ -34,7 +44,7 @@ document.getElementById(elem.innerHTML).scrollIntoView(true);
 
 </head>
 
-<body onload="scroll();">
+<body >
 
 <div id="top">
 <img style="float: right;" src="/static/logo.png">
@@ -45,7 +55,7 @@ document.getElementById(elem.innerHTML).scrollIntoView(true);
  <br> <br>
  <A href="/collection" class="f"> Get Dynamic </A> <br>
  <A href="/achievements"> Achievements </A> <br>
-
+<A href="/survey"> Survey </A> <br>
  <A href='/signout'>  Sign out </A> <br>
 </center>
   </div>

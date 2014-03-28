@@ -12,6 +12,7 @@ from commandsplitter import splitter
 from top import top
 from config import *
 from solutionchecker import checksolution
+from buttonhitter import buttonhitter
 db = getDB()
 render = None
 
@@ -78,6 +79,7 @@ class problemview2:
 
     def POST(self):
         top()
+        mbuttonhitter=buttonhitter()
         render = web.template.render(config.templatedir, base='layout', globals={'context': web.ctx.session})
         problemdata = db.select('description', web.ctx.session, where='id=$idp')
         problemdata = problemdata[0]
@@ -93,10 +95,12 @@ class problemview2:
         if web.ctx.session.hintlevel > 0:
             web.ctx.session.hint = mhinter.hint(problemdata.recurrence, web.ctx.session.hintlevel)
         data = web.input()
-
+        scroll=None
+        if 'scroll' in data:
+            scroll=data['scroll']
         if 'left0' in data:
+            mbuttonhitter.hitMenus()
             commands = build(data)
-            print commands,"hello"
             message = ''
             theirsolution = None
             try:
@@ -108,36 +112,37 @@ class problemview2:
                 if correct:
                     achecker = achievementchecker()
                     message = achecker.check(web.ctx.session.userid)
+                    mbuttonhitter.hitCorrectMenus()
             except ParserException as e:
                 correct = False
                 if theirsolution is not None:
                     return render.problemtableform(web.ctx.session.instance, mysolution, theirsolution.table, comments,
-                                               builders, correct, e.message, theircommands=commands)
+                                               builders, correct, e.message, theircommands=commands,scroll=scroll)
                 else:
                     return render.problemtableform(web.ctx.session.instance, mysolution, None, comments, builders, correct,
-                                               e.message, theircommands=commands)
+                                               e.message, theircommands=commands,scroll=scroll)
             except (NameError, SyntaxError) as e:
                 print e
                 correct = False
                 if theirsolution is not None:
                     return render.problemtableform(web.ctx.session.instance, mysolution, theirsolution.table, comments,
-                                               builders, correct, str(e), theircommands=commands)
+                                               builders, correct, str(e), theircommands=commands,scroll=scroll)
                 else:
                     return render.problemtableform(web.ctx.session.instance, mysolution, None, comments, builders, correct,
-                                               str(e), theircommands=commands)
+                                               str(e), theircommands=commands,scroll=scroll)
             except:
                 correct = False
                 if theirsolution is not None:
                  return render.problemtableform(web.ctx.session.instance, mysolution, theirsolution.table, comments,
                                                builders, correct, "Something went wrong",
-                                               theircommands=commands)
+                                               theircommands=commands,scroll=scroll)
                 else:
                     return render.problemtableform(web.ctx.session.instance, mysolution, None, comments, builders, correct,
-                                           "Something went wrong", theircommands=commands)
+                                           "Something went wrong", theircommands=commands,scroll=scroll)
             print "received checks length", len(checks)
             return render.problemtableform(web.ctx.session.instance, mysolution, theirsolution.table, comments,
                                            builders, correct=correct, message=message, theircommands=commands,
-                                           checks=checks)
+                                           checks=checks,scroll=scroll)
 
         if data['action'] == 'new':
             constants = randomgenerator.getRandomConstants(problemdata.constants)
@@ -150,19 +155,19 @@ class problemview2:
                 solver2.solve(web.ctx.session.instance.lists, web.ctx.session.instance.constants, commands,
                               web.ctx.session.instance.dimensions[0], web.ctx.session.instance.dimensions[1]))
 
-            return render.problemtableform(web.ctx.session.instance, mysolution, None, comments, builders)
+            return render.problemtableform(web.ctx.session.instance, mysolution, None, comments, builders,scroll=scroll)
         elif data['action'] == 'showsolution':
             mysolution.show = True
             web.ctx.session.solutionindex = mysolution.length
-            return render.problemtableform(web.ctx.session.instance, mysolution, None, comments,builders)
+            return render.problemtableform(web.ctx.session.instance, mysolution, None, comments,builders,scroll=scroll)
         elif data['action'] == 'nextvalue':
             mysolution.show = True
             web.ctx.session.solutionindex += 1
-            return render.problemtableform(web.ctx.session.instance, mysolution, None, comments,builders)
+            return render.problemtableform(web.ctx.session.instance, mysolution, None, comments,builders,scroll=scroll)
         elif data['action'] == 'comment':
             db.insert('comment', user_id=web.ctx.session.userid, problem_id=web.ctx.session.idp,
                       comment=data['comment'])
             comments = db.query(
                 'select * from example_users eu join comment c on c.user_id=eu.id where c.problem_id=' + web.ctx.session.idp)
 
-            return render.problemtableform(web.ctx.session.instance, mysolution, None, comments,builders)
+            return render.problemtableform(web.ctx.session.instance, mysolution, None, comments,builders,scroll=scroll)

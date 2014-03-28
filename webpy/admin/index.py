@@ -1,5 +1,5 @@
 import web
-import hashlib
+
 from web import form
 from problem import problem
 from solution import solutioninstance
@@ -35,7 +35,7 @@ class admin:
     if f.validates()==False:
       return 'Please provide a name for the problem,a difficulty and positive dimensions'
     out=""
-    db = config.getDB()
+    db = config.getAdminDB()
     hints=[]
     
     for  t in range(len(i.hintsnames)):

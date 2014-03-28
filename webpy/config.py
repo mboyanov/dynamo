@@ -7,3 +7,6 @@ import web
 
 def getDB():
     return web.database(dbn='mysql', db='web', user='root', pw='xaxaxa')
+
+def getAdminDB():
+    return web.database(dbn='mysql', db='web', user='root', pw='xaxaxa')

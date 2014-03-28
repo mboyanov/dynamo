@@ -14,7 +14,7 @@ def getForm(problem,description):
       form.Number('dimension_y',form.notnull,description="Dimension Y:",value=description['dimension_y']),
   )
   return problem_form
-db = config.getDB()
+db = config.getAdminDB()
 
 
 

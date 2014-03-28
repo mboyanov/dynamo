@@ -1,19 +1,13 @@
-$def with(problem,solution,theirsolution,comments,builders,correct=False,message='',theircommands=None,checks=None)
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
-    
-<script type="text/javascript">-->
-
-/*
-function next_value(){
-var idnow=id.toString();
-var elem=document.getElementById(idnow);
-elem.setAttribute("value", values[id]);
-elem.title=paths[id];
-id=id+1; 
-}*/
+$def with(problem,solution,theirsolution,comments,builders,correct=False,message='',theircommands=None,checks=None,scroll=None)
+<script>
+        $$(document).ready(function (){
 
 
+                    $$('html, body').animate({
+                        scrollTop: $$("#$scroll").offset().top-300
 
+            },0);
+        });
 </script>
 
 
@@ -41,15 +35,18 @@ $if problem.video is not None:
   <input type="button" class="input" onclick="show_hide('vid');" value="Video"> <br>
  <center> <div id="vid" style="display:none"> <video controls> <source src="$problem.video" > </video> </div> </center>
 <form name="regen" method="post">
+    <input type="text" name="scroll" value="table" hidden="true">
 <input type="text" name="action" value="new" hidden="true">
 <input type="submit" value="Generate new instance" class="input">
 </form>
 
 <form name="regen" method="post">
+    <input type="text" name="scroll" value="table" hidden="true">
 <input type="text" name="action" value="showsolution" hidden="true">
 <input type="submit" value="View Instance Solution" class="input">
 </form>
 <form name="regen" method="post">
+    <input type="text" name="scroll" value="table" hidden="true">
 <input type="text" name="action" value="nextvalue" hidden="true">
 <input type="submit" value="Show next value" class="input">
  <input type="button" class="input" onclick="next_value('0');" value="NEXT" style="display:none">
@@ -61,7 +58,7 @@ $if problem.video is not None:
 
 
 You can explore the solution to this instance by using the buttons above and hovering your mouse over the computed values.
-<form name="main" method="post"> 
+<form name="main" id="table" method="post">
 $code:
   if problem.dimensions[0]==1:
     rows=1
@@ -105,8 +102,8 @@ Please input the recurrence relation using either the command-based mode or the 
 <br>
 To switch to a command-based mode<A href="problem?idp=$context.idp"> click here</A>.
 
-<form name="recurrence2" method="post">
-
+<form name="recurrence2" id="rec" method="post">
+<input type="text" name="scroll" value="rec" hidden="true">
 $for commandrow in range(6):
     <br>
     <select name="left$commandrow">
@@ -219,7 +216,8 @@ $if message:
   $:message
   
 <h1> Comment </h1>  
-<form method="post">
+<form method="post" id="comment">
+    <input type="text" name="scroll" value="comment" hidden="true">
 <input type="hidden" name="action" value="comment">
 <textarea name="comment" cols="40" rows="4" class="box"></textarea>
 <input type="submit" class="input">
