@@ -6,7 +6,7 @@ del sys
 import web
 
 def getDB():
-    return web.database(dbn='mysql', db='web', user='root', pw='xaxaxa')
+    return web.database(dbn='mysql', db='web', user='root', pw='r2d2erobot')
 
 def getAdminDB():
     return web.database(dbn='mysql', db='web', user='root', pw='xaxaxa')
