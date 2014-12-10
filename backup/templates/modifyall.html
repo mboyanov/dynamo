@@ -1,9 +1,0 @@
-$def with(problems)
-<form method="POST">
-<input name="action" hidden="true" value="view">
-$for problem in problems:
-  <input type="checkbox"  value="$problem['id']" name="view"> $problem['name'] <br> 
-  
-  
-<input type="submit" class="input">
-</form>
